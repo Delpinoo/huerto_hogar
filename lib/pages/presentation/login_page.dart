@@ -1,29 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:huerto_hogar/pages/widgets/Wave_design.dart/wave.dart';
-import 'package:huerto_hogar/pages/widgets/login/login_email.dart';
+import 'package:huerto_hogar/pages/widgets/login/login_forms.dart';
 
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return  Scaffold(
+      appBar: AppBar(
+        // Para que el AppBar no tenga un color sólido
+        backgroundColor: Colors.transparent,
+        // Elimina la sombra del AppBar, es alinea blana molesta
+        elevation: 0, 
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            // Esto sirve para vovler a la pagina anterior
+            Navigator.pop(context);
+          },
+        )
+      ),
       backgroundColor: const Color.fromARGB(255, 226, 247, 221),
-      body: Center(
+
+      body: SingleChildScrollView( 
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 60),
-            CircleAvatar(
-              radius: 80, // Imagen mucho más grande
-              backgroundImage: const NetworkImage('https://thumbs.dreamstime.com/b/casa-con-el-logotipo-de-la-hoja-verde-dise%C3%B1o-huerto-hogar-granja-logo-icono-ecol%C3%B3gica-292979555.jpg'),
+            Image.asset(
+              'assets/images/HuertoHogar.png',
+              width: 200,
+              height: 200,
             ),
 
             const SizedBox(height: 20),
 
             const Text(
-              'Huerto Hogar',
+              'Iniciar Sesion',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -33,19 +54,19 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 10),
 
 
-            const Text(
-              "Iniciar sesion",
+             SizedBox(
+              width: 350,
+              child: Text("Inicia seison para poder comprar productos en Huerto hogar",
               style: TextStyle(
-                fontSize: 19,
+                fontSize: 15,
                 color: Colors.black54
-              ),
+              )),
             ),
 
             
-            LoginFormEmail(),
+            LoginForms(),
 
-
-            const Spacer(),
+            SizedBox(height: screenHeight * 0.065),
             SizedBox(
               height: 150,
               width: double.infinity,
@@ -56,6 +77,7 @@ class LoginPage extends StatelessWidget {
           ],
         ),
       ),
+    )
     );
   }
 }
