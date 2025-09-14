@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LoginFormEmail extends StatelessWidget {
-  const LoginFormEmail({super.key});
+class LoginForms extends StatelessWidget {
+  const LoginForms({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +34,8 @@ class FormEmail extends State<FormCustomEmail> {
   // acá insertamos iconos de la clase MaterialIcons de flutter.
   static const IconData key = IconData(0xf052b, fontFamily: 'MaterialIcons');
   static const IconData mail = IconData(0xe3c3, fontFamily: 'MaterialIcons');
+  static const IconData arrowBackIos = IconData(0xe093, fontFamily: 'MaterialIcons',matchTextDirection: true,);
+  
 
   // acá le damos configuraciones al intput de como queremos que sea vea y lo que contenga
   InputDecoration get inputDecorationEmail => InputDecoration(
@@ -62,9 +64,10 @@ class FormEmail extends State<FormCustomEmail> {
   Widget build(BuildContext context) {
     return Form(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // esto es para que todos los widget se centren
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 60),
+          const SizedBox(height: 20),
           Center(
             // esto es para poder ingresar texto
             child: Padding(
@@ -103,8 +106,9 @@ class FormEmail extends State<FormCustomEmail> {
 
 
           SizedBox(
+            
             height: 20,
-            width: 400,
+            width: 300,
             child: Align(
               alignment: AlignmentGeometry.centerRight,
               child: GestureDetector(
@@ -153,7 +157,7 @@ class FormEmail extends State<FormCustomEmail> {
             alignment: AlignmentGeometry.center,
             child: GestureDetector(
               onTap: () {
-                // Lógica para navegar a la página de registro
+                // acá va la logica para poder navegar a la pagina de registrar
                 print('Navegando a la página de registro');
                 // Por ejemplo: Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
               },
@@ -168,7 +172,7 @@ class FormEmail extends State<FormCustomEmail> {
                 TextSpan(
                   text: 'Regístrate',
                   style: TextStyle(
-                    color: Colors.green, // Puedes usar el color de HuertoHogar
+                    color: Colors.green, 
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -5,6 +5,7 @@ class WelcomeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context){
+
     return Column(
       children: [
         // Boton ver productos
@@ -18,14 +19,18 @@ class WelcomeButtons extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/login');
+            
+          },
           style: OutlinedButton.styleFrom(
             foregroundColor: Colors.green,
             side: const BorderSide(color: Colors.green, width: 2.0),
             padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
           ),
          child: const Text('Iniciar Sesión')
-         )
+         ),
+          
       ],
     );
   }
