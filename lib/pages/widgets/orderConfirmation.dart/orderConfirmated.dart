@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/orderConfirmation_page.dart';
 
 class Total extends StatelessWidget {
   const Total({super.key});
@@ -41,7 +40,7 @@ class Total extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 15
                         ),),
-                      trailing: const Text('\$2.50',
+                      trailing: Text('\$2.50',
                       style: TextStyle(
                         fontSize: 16,
                         ),),
@@ -51,7 +50,7 @@ class Total extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16
                         ),),
-                      trailing: const Text('\$2.50',
+                      trailing: Text('\$2.50',
                       style: TextStyle(
                         fontSize: 16,
                         ),),
@@ -61,7 +60,7 @@ class Total extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16
                         ),),
-                      trailing: const Text('\$2.50',
+                      trailing: Text('\$2.50',
                       style: TextStyle(
                         fontSize: 16,
                         ),),

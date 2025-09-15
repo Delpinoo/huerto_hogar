@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/orderConfirmation_page.dart';
 
 // Este widget representa la tarjeta que muestra los detalles de la entrega.
 class DetallesDeliveryCard extends StatelessWidget {

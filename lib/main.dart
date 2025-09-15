@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/login_page.dart';
 import 'package:huerto_hogar/pages/presentation/welcome_page.dart';
-import 'package:huerto_hogar/pages/presentation/review_page.dart';
-import 'package:huerto_hogar/pages/presentation/orderConfirmation_page.dart';
 void main() {
   runApp(const MyApp());
 }

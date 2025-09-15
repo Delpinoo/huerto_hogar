@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/review_page.dart';
 
 
 class ReviewCard extends StatelessWidget {
