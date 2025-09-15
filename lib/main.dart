@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:huerto_hogar/pages/presentation/welcome_page.dart';
 import 'package:huerto_hogar/pages/presentation/delivery_preferences.dart';
 // import 'package:huerto_hogar/pages/presentation/login_page.dart';
 // import 'package:huerto_hogar/pages/presentation/welcome_page.dart';
@@ -12,7 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+return MaterialApp(
+
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
       // title: 'Huerto Hogar',
       // initialRoute: '/',
@@ -20,7 +25,10 @@ class MyApp extends StatelessWidget {
       //   '/': (context) => const WelcomePage(),
       //   '/login': (context) => const LoginPage()
       // },
-      home: DeliveryPreferences(),
+
+      home: WelcomePage(),
+    );
+}
     );
   }
 }
