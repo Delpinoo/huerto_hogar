@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/widgets/orderConfirmation.dart/orderConfirmated.dart';
-import 'package:huerto_hogar/pages/widgets/orderConfirmation.dart/deliveryDetails.dart';
+import 'package:huerto_hogar/pages/widgets/orderConfirmation.dart/order_confirmated.dart';
+import 'package:huerto_hogar/pages/widgets/orderConfirmation.dart/delivery_details.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 // Cambia a StatefulWidget para manejar el estado de la barra de navegación
