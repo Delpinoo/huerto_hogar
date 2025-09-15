@@ -7,10 +7,10 @@ class ReviewProductPage extends StatefulWidget {
   const ReviewProductPage({super.key});
 
   @override
-  _ReviewProductPageState createState() => _ReviewProductPageState();
+  ReviewProductPageState createState() => ReviewProductPageState();
 }
 
-class _ReviewProductPageState extends State<ReviewProductPage> {
+class ReviewProductPageState extends State<ReviewProductPage> {
   int _selectedIndex = 0; // Índice de la página actual
 
   void _onItemTapped(int index) {
