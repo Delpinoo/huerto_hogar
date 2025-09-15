@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart';
 import 'package:huerto_hogar/pages/widgets/Wave_design.dart/wave.dart';
 import 'package:huerto_hogar/pages/widgets/login/login_forms.dart';
 
@@ -19,13 +20,7 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         // Elimina la sombra del AppBar, es alinea blana molesta
         elevation: 0, 
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            // Esto sirve para vovler a la pagina anterior
-            Navigator.pop(context);
-          },
-        )
+        leading: const BotonAtras()
       ),
       backgroundColor: const Color.fromARGB(255, 226, 247, 221),
 
@@ -53,7 +48,6 @@ class LoginPage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-
              SizedBox(
               width: 350,
               child: Text("Inicia seison para poder comprar productos en Huerto hogar",
@@ -63,7 +57,6 @@ class LoginPage extends StatelessWidget {
               )),
             ),
 
-            
             LoginForms(),
 
             SizedBox(height: screenHeight * 0.065),
