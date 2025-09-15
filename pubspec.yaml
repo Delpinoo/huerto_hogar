@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  table_calendar: ^3.0.9
 
   #esto es para obtener la calificacion con las estrellas
   flutter_rating_bar: ^4.0.0 

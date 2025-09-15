@@ -1,35 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/widgets/login/login_email.dart';
+import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart';
+import 'package:huerto_hogar/pages/widgets/Wave_design.dart/wave.dart';
+import 'package:huerto_hogar/pages/widgets/login/login_forms.dart';
+
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return  Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        // Para que el AppBar no tenga un color sólido
+        backgroundColor: Colors.transparent,
+        // Elimina la sombra del AppBar, es alinea blana molesta
+        elevation: 0, 
+        leading: const BotonAtras()
       ),
-      body: Center(
+      backgroundColor: const Color.fromARGB(255, 226, 247, 221),
+
+      body: SingleChildScrollView( 
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 80, // Imagen mucho más grande
-              backgroundImage: const NetworkImage('https://thumbs.dreamstime.com/b/casa-con-el-logotipo-de-la-hoja-verde-dise%C3%B1o-huerto-hogar-granja-logo-icono-ecol%C3%B3gica-292979555.jpg'),
+            SizedBox(height: 60),
+            Image.asset(
+              'assets/images/HuertoHogar.png',
+              width: 200,
+              height: 200,
             ),
+
             const SizedBox(height: 20),
+
             const Text(
-              'Huerto Hogar',
+              'Iniciar Sesion',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            LoginFormEmail(),
+
+            const SizedBox(height: 10),
+
+             SizedBox(
+              width: 350,
+              child: Text("Inicia seison para poder comprar productos en Huerto hogar",
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black54
+              )),
+            ),
+
+            LoginForms(),
+
+            SizedBox(height: screenHeight * 0.065),
+            SizedBox(
+              height: 150,
+              width: double.infinity,
+              child: CustomPaint(
+                  painter: WavePainter(const Color(0xFFC8E6C9)),
+              ),
+            )
           ],
         ),
       ),
+    )
     );
   }
 }
