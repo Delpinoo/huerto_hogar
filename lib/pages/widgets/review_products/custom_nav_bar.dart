@@ -21,7 +21,7 @@ class CustomNavbar extends StatelessWidget {
       backgroundColor: Colors.white,
       color: Colors.grey,
       activeColor: Colors.green,
-      tabBackgroundColor: Colors.green.withOpacity(0.1),
+      tabBackgroundColor: Colors.green.withValues(alpha: 0.1),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       gap: 8,
       tabs: const [
