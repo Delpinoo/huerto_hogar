@@ -58,13 +58,13 @@ class _LoyaltyProgramsState extends State<LoyaltyPrograms> {
                           image: const DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_xNn3y9y-oU1T5cW8Xl8pQ5-k_g-h_aB_A&s'),
+                                'https://tse2.mm.bing.net/th/id/OIP.qbSh1AApPYS3lbuCdhQqnAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3'),
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
                       const Text(
-                        'Sofia Ramirez',
+                        'Irelia Legends',
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -143,16 +143,16 @@ class _LoyaltyProgramsState extends State<LoyaltyPrograms> {
           ),
 
           // 2. El Navbar es la segunda capa, anclada en la parte inferior
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: CustomNavbar(
-              selectedIndex: _selectedIndex,
-              onTabChange: _onTabChange,
-              pages: const [],
-            ),
-          ),
+          Align( // <-- Align la pone en la parte de abajo
+                      alignment: Alignment.bottomCenter,
+                      child: SafeArea( // <-- Mantiene la barra lejos de los botones del sistema
+                        child: CustomNavbar(
+                          selectedIndex: _selectedIndex,
+                          onTabChange: _onTabChange,
+                          pages: const [],
+                        ),
+                      ),
+                    ),
         ],
       ),
     );

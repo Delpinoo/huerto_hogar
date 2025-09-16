@@ -18,14 +18,32 @@ class _SelectTimeState extends State<SelectTime> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+  return Container(
+    // 1. Margen para separar la tarjeta de otros elementos de la pantalla
+    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    // 2. Decoración para la forma, color y sombra de la tarjeta
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    // 3. Relleno interior para que el contenido no esté pegado a los bordes
+    padding: const EdgeInsets.all(10),
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
           'Seleccionar hora de reparto',
-          style: TextStyle(fontSize: 25),
+          style: TextStyle(fontSize: 15),
         ),
-        // Here, use the TimeSlotOption widget defined below
+        // Aquí los widgets de TimeSlotOption
         TimeSlotOption(
           label: 'Mañana (8 AM - 12 PM)',
           isSelected: _selectedTimeSlot == 'Mañana',
@@ -54,8 +72,9 @@ class _SelectTimeState extends State<SelectTime> {
           },
         ),
       ],
-    );
-  }
+    ),
+  );
+}
 }
 
 // ----------------------------------------
