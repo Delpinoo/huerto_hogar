@@ -34,77 +34,104 @@ class _DeliveryPreferencesState extends State<DeliveryPreferences> {
         leading: const BotonAtras(),
       ),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      body: Center(
-        child: SizedBox(
-          width: 400,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 30,),
-              const Text(
-                'Seleccione la fecha',
-                style: TextStyle(fontSize: 25),
-              ),
-              TableCalendar(
-                calendarStyle: const CalendarStyle(
-                  selectedDecoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                  ),
-                  todayDecoration: BoxDecoration(
-                    color: Color(0xFF1B5E20),
-                    shape: BoxShape.circle,
-                  ),
+body: SingleChildScrollView(  // <-- Envuelve todo el contenido con SingleChildScrollView
+        child: Center(
+          child: SizedBox(
+            width: 400,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 30),
+                const Padding(
+                  padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                  child: Text(
+                  'Seleccione la fecha',
+                  style: TextStyle(fontSize: 25),
                 ),
-                headerStyle: const HeaderStyle(
-                  formatButtonVisible: false,
-                ),
-                focusedDay: _focusedDay,
-                firstDay: DateTime.now(),
-                lastDay: DateTime(DateTime.now().year + 1),
-                calendarFormat: CalendarFormat.month,
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDate, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(_selectedDate, selectedDay)) {
-                    setState(() {
-                      _selectedDate = selectedDay;
-                      _focusedDay = focusedDay;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(height: 50,),
-              const SelectTime(),
-              const SizedBox(height: 30,),
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                ), 
+                
+                Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  
+                  elevation: 5, // La elevación controla la intensidad de la sombra
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: TableCalendar(
+                    calendarStyle: const CalendarStyle(
+                      selectedDecoration: BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
                       ),
-                      child: const Text(
-                        'Guardar Referencia',
-                        style: TextStyle(fontSize: 20),
+                      todayDecoration: BoxDecoration(
+                        color: Color(0xFF1B5E20),
+                        shape: BoxShape.circle,
                       ),
                     ),
-                const SizedBox(height: 40,),
-                CustomNavbar(
-                  selectedIndex: _selectedIndex, 
-                  onTabChange: _onTabChange, pages: [],
+                    headerStyle: const HeaderStyle(
+                      formatButtonVisible: false,
+                    ),
+                    focusedDay: _focusedDay,
+                    firstDay: DateTime.now(),
+                    lastDay: DateTime(DateTime.now().year + 1),
+                    calendarFormat: CalendarFormat.month,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDate, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      if (!isSameDay(_selectedDate, selectedDay)) {
+                        setState(() {
+                          _selectedDate = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                      }
+                    },
+                  ),
                 ),
-                  ],
-                  
+                const SizedBox(height: 10),
+                const SelectTime(),
+                const SizedBox(height: 20),
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: SizedBox(
+                            width: double.infinity, // <-- Hace que el SizedBox ocupe el ancho disponible
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                                // Eliminamos el padding horizontal del botón para controlarlo desde fuera
+                                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15), 
+                              ),
+                              child: const Text(
+                                'Guardar Referencia',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5,),
+                      Align( // <-- Align la pone en la parte de abajo
+                      alignment: Alignment.bottomCenter,
+                      child: SafeArea( // <-- Mantiene la barra lejos de los botones del sistema
+                        child: CustomNavbar(
+                          selectedIndex: _selectedIndex,
+                          onTabChange: _onTabChange,
+                          pages: const [],
+                        ),
+                      ),
+                    ),
+                    ],
+                  ),
                 ),
-
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
