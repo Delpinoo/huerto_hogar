@@ -34,7 +34,7 @@ class _DeliveryPreferencesState extends State<DeliveryPreferences> {
         leading: const BotonAtras(),
       ),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-body: SingleChildScrollView(  // <-- Envuelve todo el contenido con SingleChildScrollView
+      body: SingleChildScrollView(  // <-- Envuelve todo el contenido con SingleChildScrollView
         child: Center(
           child: SizedBox(
             width: 400,
@@ -117,6 +117,7 @@ body: SingleChildScrollView(  // <-- Envuelve todo el contenido con SingleChildS
                         ),
                       ),
                       const SizedBox(height: 5,),
+                      
                       Align( // <-- Align la pone en la parte de abajo
                       alignment: Alignment.bottomCenter,
                       child: SafeArea( // <-- Mantiene la barra lejos de los botones del sistema
