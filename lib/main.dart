@@ -4,6 +4,7 @@ import 'package:huerto_hogar/pages/presentation/share_app.dart';
 
 
 
+
 void main() {
   runApp(const MyApp());
 }
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       //   '/login': (context) => const LoginPage()
       // },
       home: ShareApp(),
+
     );
   }
   }
