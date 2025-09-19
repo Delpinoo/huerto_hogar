@@ -22,7 +22,7 @@ class CustomNavbar extends StatelessWidget {
       color: Colors.grey,
       activeColor: Colors.green,
       tabBackgroundColor: Colors.green.withValues(alpha: 0.1),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       gap: 8,
       tabs: const [
         GButton(

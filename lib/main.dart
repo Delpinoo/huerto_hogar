@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/about_us.dart';
+// import 'package:huerto_hogar/pages/presentation/delivery_preferences.dart';
+import 'package:huerto_hogar/pages/presentation/share_app.dart';
+
 
 
 void main() {
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
       //   '/': (context) => const WelcomePage(),
       //   '/login': (context) => const LoginPage()
       // },
-      home: AboutUs(),
+      home: ShareApp(),
     );
   }
   }

@@ -28,8 +28,9 @@ class _AboutUsState extends State<AboutUs> {
 Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sobre Nosotros'),
+        title: Text('Sobre Nosotros',),
         leading: BotonAtras(),
+        centerTitle: true,
       ),
 
       body: 
@@ -41,7 +42,12 @@ Widget build(BuildContext context) {
                 Padding(
                 padding: EdgeInsetsGeometry.symmetric(horizontal: 15),
                 child: SizedBox(
-                  child: const Text('¿Quienes somos?'),),
+
+
+                  child: const Text('¿Quienes somos?',
+                  style: TextStyle(fontSize: 20,
+                  color: Colors.brown),
+                  ),),
                 ),
                 Padding(
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 15),
@@ -53,7 +59,8 @@ Widget build(BuildContext context) {
                       child: Column(
                         children: [
                         const SizedBox(height: 20,),
-                        const Text('Sunt et et minim consequat reprehenderit eu elit non exercitation anim. Enim ex esse aliqua deserunt ut proident. Incididunt ullamco non id aliquip laboris dui.')
+                        const Text('Sunt et et minim consequat reprehenderit eu elit non exercitation anim. Enim ex esse aliqua deserunt ut proident. Incididunt ullamco non id aliquip laboris dui.',
+                        style: TextStyle(fontSize: 19),)
                         ],
                       ),),
                     ],
@@ -66,7 +73,9 @@ Widget build(BuildContext context) {
 
 
                 Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 15),
-                  child: const Text('¿Quienes que hacemos?'),
+                  child: const Text('¿Quienes que hacemos?',
+                  style: TextStyle(fontSize: 20,
+                  color: Colors.brown),),
                 ),
 
 
@@ -80,18 +89,21 @@ Widget build(BuildContext context) {
                         child: Column(
                           children: [
                             const SizedBox(height: 20,),
-                            const Text('Ullamco pariatur ad culpa Lorem cupidatat sint et nulla ut nostrud. Excepteur do commodo pariatur quis officia commodo sunt et reprehenderit non dolore. Deserunt ex eu ea quis ut ea. Est officia sint tempor duis. Laboris nulla pariatur officia enim non ex enim culpa qui consequat labore deserunt labore in. Non mollit amet eiusmod ad laborum veniam adipisicing in cupidatat. Dolore aliqua aute eu ullamco consequat proident dolor do.')
-                          ],
-                        ),
+                            const Text('Ullamco pariatur ad culpa Lorem cupidatat sint et nulla ut nostrud. Excepteur do commodo pariatur quis officia commodo sunt et reprehenderit non dolore. Deserunt ex eu ea quis ut ea. Est officia sint tempor duis. Laboris nulla pariatur officia enim non ex enim culpa qui consequat labore deserunt labore in. Non mollit amet eiusmod ad laborum veniam adipisicing in cupidatat. Dolore aliqua aute eu ullamco consequat proident dolor do.',
+                            style: TextStyle(fontSize: 19),)
+                            ],
+                          ),
                         ),
                       ],
+                    ),
                   ),
-                ),
                 ),
                 
                 const SizedBox(height: 20,),
                 Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 15),
-                child: const Text('¿Que queremos?'),
+                child: const Text('¿Que queremos?',
+                style: TextStyle(fontSize: 25,
+                color: Colors.brown),),
                 ),
                 Padding(
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 15),
@@ -103,29 +115,32 @@ Widget build(BuildContext context) {
                         child: Column(
                           children: [
                             const SizedBox(height: 30,),
-                            const Text('Excepteur dolore enim minim excepteur sint do veniam excepteur aute Lorem enim. Irure tempor ullamco anim proident et labore pariatur consectetur. Tempor esse magna eiusmod quis et adipisicing ea ea occaecat qui.')
-
+                            const Text('Excepteur dolore enim minim excepteur sint do veniam excepteur aute Lorem enim. Irure tempor ullamco anim proident et labore pariatur consectetur. Tempor esse magna eiusmod quis et adipisicing ea ea occaecat qui.',
+                            style: TextStyle(fontSize: 19),)
                           ],
                         ),
-                        ),                        ],
+                      ),
+                    ],
                   ),
                 ),
-                ),
+              ),
                 const SizedBox(height: 70,),
-                Align( // <-- Align la pone en la parte de abajo
+                const Spacer(),
+                Align(
                       alignment: Alignment.bottomCenter,
-                      child: SafeArea( // <-- Mantiene la barra lejos de los botones del sistema
+                      child: SafeArea(
                         child: CustomNavbar(
+                          
                           selectedIndex: _selectedIndex,
                           onTabChange: _onTabChange,
                           pages: const [],
                         ),
                       ),
-                    ),
-                    
+                    ),    
               ],
           ),
         ),
+          
           ],
          )
     );
