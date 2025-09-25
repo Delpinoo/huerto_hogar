@@ -30,7 +30,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
       'Cantidad': 2,
       'Peso': '1 kg',
       'Precio': 4500,
-      'imageUrl': 'https://images.unsplash.com/photo-1579613832135-ad681a1bcf0a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'imageUrl': 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
       'Nombre': 'Espinacas Frescas',
@@ -44,7 +44,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
       'Cantidad': 3,
       'Peso': '1 kg',
       'Precio': 2000,
-      'imageUrl': 'https://images.unsplash.com/photo-1596707447668-525e982f170d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'imageUrl': 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
   ];
 

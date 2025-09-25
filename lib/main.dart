@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:huerto_hogar/pages/presentation/Search.dart';
+import 'package:huerto_hogar/pages/presentation/ShoppingCartPage.dart';
+import 'package:huerto_hogar/pages/presentation/UserProfilePage.dart';
 import 'package:huerto_hogar/pages/presentation/about_us.dart';
+import 'package:huerto_hogar/pages/presentation/blog.dart';
 import 'package:huerto_hogar/pages/presentation/order_confirmation_page.dart';
 
 // import 'package:huerto_hogar/pages/presentation/delivery_preferences.dart';
@@ -26,7 +29,7 @@ class MyApp extends StatelessWidget {
       //   '/': (context) => const WelcomePage(),
       //   '/login': (context) => const LoginPage()
       // },
-      home: OrderConfirmationPage()
+      home: BlogPage()
 
     );
   }
