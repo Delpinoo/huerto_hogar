@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+// Asegúrate de que esta ruta sea la correcta para tu CustomNavbar
+import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart'; 
+// Si la página usara imágenes de red, necesitarías:
+// import 'package:cached_network_image/cached_network_image.dart'; 
+
 
 void main() {
   runApp(const ImpactApp());
@@ -11,7 +16,8 @@ class ImpactApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const ImpactScreen(),
+      // Usamos la versión Stateful para la navegación
+      home: const ImpactScreen(), 
       theme: ThemeData(
         primaryColor: Colors.green[800],
         scaffoldBackgroundColor: Colors.grey[100],
@@ -29,8 +35,24 @@ class ImpactApp extends StatelessWidget {
   }
 }
 
-class ImpactScreen extends StatelessWidget {
+// 1. CONVERTIR A STATEFULWIDGET
+class ImpactScreen extends StatefulWidget {
   const ImpactScreen({super.key});
+
+  @override
+  State<ImpactScreen> createState() => _ImpactScreenState();
+}
+
+class _ImpactScreenState extends State<ImpactScreen> {
+  // Estado para la barra de navegación
+  int _selectedIndex = 0; // Asume que esta es la primera o la segunda pestaña, ajusta según tu orden.
+
+  void _onTabChange(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // *** NOTA: Aquí iría la lógica de navegación real (ej. Navigator) ***
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +62,10 @@ class ImpactScreen extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.green[800]),
-          onPressed: () {},
+          onPressed: () {
+            // Lógica para regresar a la pantalla anterior
+            Navigator.pop(context);
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -65,30 +90,15 @@ class ImpactScreen extends StatelessWidget {
               'Prácticas Sostenibles',
               _buildSustainablePracticesCard(),
             ),
+            const SizedBox(height: 80), // Espacio para que el contenido no quede debajo del Navbar
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green[800],
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.apps),
-            label: 'Categorías',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Carrito',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-        ],
+      // 2. REEMPLAZAR EL BottomNavigationBar ESTÁNDAR POR CUSTOMNAVBAR
+      bottomNavigationBar: CustomNavbar(
+        selectedIndex: _selectedIndex,
+        onTabChange: _onTabChange,
+        pages: const [], // Debes pasar la lista de widgets de las páginas principales aquí
       ),
     );
   }
@@ -123,7 +133,9 @@ class ImpactScreen extends StatelessWidget {
     );
   }
 
+  // El resto de los métodos _build...Card() se mantienen igual ya que no usan Image.network
   Widget _buildEnvironmentalImpactCard() {
+    // ... código de la tarjeta ...
     return Column(
       children: [
         Stack(
@@ -172,6 +184,7 @@ class ImpactScreen extends StatelessWidget {
   }
 
   Widget _buildCommunitySupportCard() {
+    // ... código de la tarjeta ...
     return Column(
       children: [
         Row(
@@ -215,6 +228,7 @@ class ImpactScreen extends StatelessWidget {
   }
 
   Widget _buildSustainablePracticesCard() {
+    // ... código de la tarjeta ...
     return Column(
       children: [
         Row(

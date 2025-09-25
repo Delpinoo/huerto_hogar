@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+// Importamos el CustomNavbar
+import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart'; 
+// No necesitamos CachedNetworkImage aquí, ya que usamos Image.asset
 
 void main() {
   runApp(const SearchApp());
@@ -12,7 +14,8 @@ class SearchApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SearchScreen(),
+      // Usamos la versión Stateful para la navegación
+      home: const SearchScreen(), 
       theme: ThemeData(
         primaryColor: Colors.green[800],
         scaffoldBackgroundColor: Colors.grey[100],
@@ -45,18 +48,36 @@ class SearchApp extends StatelessWidget {
   }
 }
 
-class SearchScreen extends StatelessWidget {
+// 1. CONVERTIR A STATEFULWIDGET
+class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  // Estado para la barra de navegación
+  int _selectedIndex = 1; // Asume que 'Categories' (o búsqueda) es el índice 1
+
+  void _onTabChange(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // Lógica de navegación real (ej. Navigator) iría aquí.
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Busqueda de Productos'),
+        title: const Text('Búsqueda de Productos'),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.green[800]),
-          onPressed: () {},
+          onPressed: () {
+            // Lógica para retroceder
+          },
         ),
       ),
       body: Column(
@@ -71,17 +92,17 @@ class SearchScreen extends StatelessWidget {
               mainAxisSpacing: 16.0,
               crossAxisSpacing: 16.0,
               children: [
-            _buildProductCard(
-              'Organico',
-              'Caja de tomates',
-              'assets/images/cajatomates.png',
-              '\$1.000  Pesos',
-            ),
+                _buildProductCard(
+                  'Organico',
+                  'Caja de tomates',
+                  'assets/images/cajatomates.png',
+                  '\$1.000 Pesos',
+                ),
                 _buildProductCard(
                   'Local',
                   'Tomate Cherry',
                   'assets/images/tomatecherry.png',
-                  '\$1.000  Pesos',
+                  '\$1.000 Pesos',
                 ),
                 _buildProductCard(
                   'Organico',
@@ -100,30 +121,16 @@ class SearchScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green[800],
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Categories',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+      // 2. REEMPLAZAR EL BottomNavigationBar ESTÁNDAR POR CUSTOMNAVBAR
+      bottomNavigationBar: CustomNavbar(
+        selectedIndex: _selectedIndex,
+        onTabChange: _onTabChange,
+        pages: const [], // Debe llenarse con los widgets de las páginas principales
       ),
     );
   }
+
+  // Los métodos auxiliares se mantienen dentro de _SearchScreenState
 
   Widget _buildSearchBar(BuildContext context) {
     return Padding(
@@ -158,7 +165,7 @@ class SearchScreen extends StatelessWidget {
           const Spacer(),
           const Icon(Icons.filter_list, color: Colors.grey),
           const SizedBox(width: 4),
-          Text('Filtros', style: TextStyle(color: Colors.grey)),
+          const Text('Filtros', style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -184,6 +191,7 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
+  // El _buildProductCard se mantiene con Image.asset, ya que no presenta riesgo ANR.
   Widget _buildProductCard(
       String category, String name, String imageUrl, String price) {
     return Card(

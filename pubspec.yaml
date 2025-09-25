@@ -32,7 +32,7 @@ dependencies:
     sdk: flutter
   table_calendar: ^3.0.9
   font_awesome_flutter: ^10.7.0
-
+  cached_network_image: ^3.3.1
   #esto es para obtener la calificacion con las estrellas
   flutter_rating_bar: ^4.0.0 
 

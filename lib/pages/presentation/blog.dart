@@ -1,58 +1,71 @@
 // En lib/pages/blog_page.dart
 import 'package:flutter/material.dart';
 import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart';
+import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // ¡Importante para evitar ANR!
 
-class BlogPage extends StatelessWidget {
+class BlogPage extends StatefulWidget {
   const BlogPage({super.key});
+
+  @override
+  State<BlogPage> createState() => _BlogPageState();
+}
+
+class _BlogPageState extends State<BlogPage> {
+  // Estado para la barra de navegación
+  int _selectedIndex = 1; // 1 es el índice para 'Blog', asumiendo que es la segunda pestaña
+
+  void _onTabChange(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // ***NOTA IMPORTANTE: Aquí deberías agregar la lógica de navegación real***
+    // Por ejemplo, usar un PageController o Navigator.push para cambiar de página.
+    // Esto dependerá de cómo tengas organizada tu estructura de navegación principal.
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HuertoHogar Blog'),
-
+        title: const Text('HuertoHogar Blog',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        leading: BotonAtras(),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: const BotonAtras(),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           _buildBlogCard(
             context,
-            'The Benefits of Eating Local Produce',
-            'Discover why choosing locally sourced fruits and vegetables is not only good for your health but also supports your community and the environment.',
-            '3 min read',
+            'Los Beneficios de Comer Productos Locales',
+            'Descubre por qué elegir frutas y verduras de origen local no solo es bueno para tu salud, sino que también apoya a tu comunidad y al medio ambiente.',
+            '3 min de lectura',
             'https://images.unsplash.com/photo-1542838132-233633d45591?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
           ),
           const SizedBox(height: 20),
           _buildBlogCard(
             context,
-            'Sustainable Farming Practices',
-            'Learn about the methods that farmers are using to protect the environment and produce healthy food for generations to come.',
-            '5 min read',
+            'Prácticas de Cultivo Sostenible',
+            'Aprende sobre los métodos que los agricultores están utilizando para proteger el medio ambiente y producir alimentos saludables para las generaciones venideras.',
+            '5 min de lectura',
             'https://images.unsplash.com/photo-1517486801831-50e58d45e54d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
           ),
+          const SizedBox(height: 80), // Espacio extra para que la navbar no cubra el último contenido
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green[800],
-        unselectedItemColor: Colors.green[300],
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.text_snippet),
-            label: 'Blog',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+      // Implementación de la barra de navegación
+      bottomNavigationBar: CustomNavbar(
+        selectedIndex: _selectedIndex,
+        onTabChange: _onTabChange,
+        pages: const [], // Debe llenarse con los widgets de las páginas principales
       ),
     );
   }
 
+  // Widget _buildBlogCard con implementación de CachedNetworkImage
   Widget _buildBlogCard(
     BuildContext context,
     String title,
@@ -68,11 +81,27 @@ class BlogPage extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-            child: Image.asset(
-              'assets/images/cultivos-de-la-huerta.jpg',
+            child: CachedNetworkImage( // ¡SOLUCIÓN PARA ANR!
+              imageUrl: imageUrl,
               height: 200,
               width: double.infinity,
               fit: BoxFit.cover,
+              // Muestra un indicador de carga mientras descarga
+              placeholder: (context, url) => SizedBox(
+                height: 200,
+                child: Center(
+                  child: CircularProgressIndicator(
+                      color: Colors.green[800], strokeWidth: 2),
+                ),
+              ),
+              // Muestra un ícono si falla la carga
+              errorWidget: (context, url, error) => const SizedBox(
+                height: 200,
+                child: Center(
+                  child: Icon(Icons.image_not_supported,
+                      size: 50, color: Colors.grey),
+                ),
+              ),
             ),
           ),
           Padding(
@@ -82,8 +111,8 @@ class BlogPage extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    color: Colors.green, // ¡Aquí está el cambio!
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 116, 175, 126),
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
