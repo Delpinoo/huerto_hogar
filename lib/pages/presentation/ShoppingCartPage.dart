@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // Importante para imágenes de red
-import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart'; 
-// Asume que tienes un BotonAtras si lo necesitas, aunque aquí usamos un IconButton estándar.
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
+import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart';
 
+// *** IMPORTACIÓN NECESARIA PARA RESOLVER EL ERROR DE NAVEGACIÓN ***
+// Asegúrate de que esta ruta sea correcta en tu estructura de carpetas
+import 'package:huerto_hogar/pages/presentation/order_confirmation_page.dart';
 
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({super.key});
@@ -12,61 +15,84 @@ class ShoppingCartPage extends StatefulWidget {
 }
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
-  // Estado para la barra de navegación
-  // Asume que 'Cart' es la tercera pestaña (índice 2)
-  int _selectedIndex = 2; 
+  // Estado para la barra de navegación. 'Cart' es la tercera pestaña (índice 2)
+  int _selectedIndex = 2;
+
+  // Mapeo de índices a las rutas definidas en tu MaterialApp (SearchApp en este caso)
+  final List<String> _routes = const [
+    '/', // 0: Home (WelcomePage)
+    '/search', // 1: Search
+    '/carrito', // 2: Cart (ShoppingCartPage)
+    '/profile', // 3: Profile (UserProfilePage)
+  ];
 
   void _onTabChange(int index) {
+    if (_selectedIndex == index) {
+      return;
+    }
+
     setState(() {
       _selectedIndex = index;
     });
-    // Lógica de navegación real (ej. Navigator) iría aquí.
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      _routes[index],
+      (route) => false,
+    );
   }
 
-  // Lista de productos del carrito con datos simulados (incluye URLs para la corrección ANR)
+  // Lista de productos del carrito con datos simulados
   final List<Map<String, dynamic>> _cartItems = [
+    // ... (Lista de productos) ...
     {
       'Nombre': 'Manzanas organicas',
       'Cantidad': 2,
       'Peso': '1 kg',
       'Precio': 4500,
-      'imageUrl': 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
       'Nombre': 'Espinacas Frescas',
       'Cantidad': 1,
       'Peso': '500 g',
       'Precio': 3000,
-      'imageUrl': 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
       'Nombre': 'Tomates Rojos',
       'Cantidad': 3,
       'Peso': '1 kg',
       'Precio': 2000,
-      'imageUrl': 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'imageUrl':
+          'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1994&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
     // Calculo de precios simulado
-    double subtotal = _cartItems.fold(0, (sum, item) => sum + (item['Precio'] * item['Cantidad']));
+    double subtotal = _cartItems.fold(
+      0,
+      (sum, item) => sum + (item['Precio'] * item['Cantidad']),
+    );
     const double shipping = 3500;
-    const double promotion = 1800; // Valor fijo según tu imagen
+    const double promotion = 1800;
     double total = subtotal + shipping - promotion;
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text('Tu Carrito', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Tu Carrito',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF4C7B42)), // Color verde oscuro
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: const BotonAtras(),
       ),
       body: Stack(
         children: [
@@ -75,27 +101,31 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 1. Lista de Productos
                 ..._cartItems.map((item) => _buildCartItem(item)).toList(),
                 const SizedBox(height: 20),
 
-                // 2. Resumen del Carrito
                 _buildSummaryCard(subtotal, shipping, promotion, total),
-                const SizedBox(height: 100), // Espacio para que el botón no sea cubierto por la navbar
+                const SizedBox(height: 100),
               ],
             ),
           ),
-          
-          // 3. Botón 'Proceed to Checkout' fijo en la parte inferior
+
+          // Botón 'Proceed to Checkout' fijo en la parte inferior
           Positioned(
-            bottom: 60, // Ajuste para que quede justo encima del CustomNavbar
+            bottom: 70,
             left: 0,
             right: 0,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ElevatedButton(
+                // Lógica de navegación a la ruta que ya definiste en main.dart
                 onPressed: () {
-                  // Lógica para ir a la pantalla de pago
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OrderConfirmationPage(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF4C7B42), // Verde oscuro
@@ -105,7 +135,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   ),
                 ),
                 child: const Text(
-                  'Proceed to Checkout',
+                  'Proceder al Pago',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
@@ -113,18 +143,19 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           ),
         ],
       ),
-      
-      // 4. CustomNavbar implementado
+
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
         onTabChange: _onTabChange,
-        pages: const [], // Lista de páginas de navegación
+        pages: const [],
       ),
     );
   }
 
-  // Widget para construir cada elemento del carrito
+  // --- MÉTODOS AUXILIARES (Omitidos por brevedad) ---
+
   Widget _buildCartItem(Map<String, dynamic> item) {
+    // ... (implementación de _buildCartItem) ...
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),
       elevation: 2,
@@ -133,7 +164,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
-            // IMAGEN: Usando CachedNetworkImage para la corrección ANR
+            // IMAGEN: Usando CachedNetworkImage
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: CachedNetworkImage(
@@ -142,13 +173,21 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 height: 70,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => const SizedBox(
-                  width: 70, height: 70, child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
+                  width: 70,
+                  height: 70,
+                  child: Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
                 errorWidget: (context, url, error) => const SizedBox(
-                  width: 70, height: 70, child: Icon(Icons.broken_image, size: 40)),
+                  width: 70,
+                  height: 70,
+                  child: Icon(Icons.broken_image, size: 40),
+                ),
               ),
             ),
             const SizedBox(width: 12),
-            
+
             // DETALLES DEL PRODUCTO
             Expanded(
               child: Column(
@@ -156,7 +195,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 children: [
                   Text(
                     item['Nombre'],
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                   Text(
                     '${item['Peso']} | \$${item['Precio']}',
@@ -165,22 +207,31 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 ],
               ),
             ),
-            
+
             // CONTROLES DE CANTIDAD
             Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.remove_circle_outline, color: Colors.grey),
+                  icon: const Icon(
+                    Icons.remove_circle_outline,
+                    color: Colors.grey,
+                  ),
                   onPressed: () {
                     // Lógica para decrementar cantidad
                   },
                 ),
                 Text(
                   item['Cantidad'].toString(),
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add_circle, color: Color(0xFF4C7B42)), // Verde oscuro
+                  icon: const Icon(
+                    Icons.add_circle,
+                    color: Color(0xFF4C7B42),
+                  ), // Verde oscuro
                   onPressed: () {
                     // Lógica para incrementar cantidad
                   },
@@ -193,25 +244,52 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     );
   }
 
-  // Widget para construir la tarjeta de resumen de precios
-  Widget _buildSummaryCard(double subtotal, double shipping, double promotion, double total) {
+  Widget _buildSummaryCard(
+    double subtotal,
+    double shipping,
+    double promotion,
+    double total,
+  ) {
+    // ... (implementación de _buildSummaryCard) ...
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Resumen', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        const Text(
+          'Resumen',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
         const SizedBox(height: 10),
         Card(
           elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                _buildSummaryRow('Subtotal', '\$${subtotal.toStringAsFixed(0)}', Colors.black),
-                _buildSummaryRow('Envío', '\$${shipping.toStringAsFixed(0)}', Colors.black),
-                _buildSummaryRow('Promoción', '-\$${promotion.toStringAsFixed(0)}', Colors.orange),
+                _buildSummaryRow(
+                  'Subtotal',
+                  '\$${subtotal.toStringAsFixed(0)}',
+                  Colors.black,
+                ),
+                _buildSummaryRow(
+                  'Envío',
+                  '\$${shipping.toStringAsFixed(0)}',
+                  Colors.black,
+                ),
+                _buildSummaryRow(
+                  'Promoción',
+                  '-\$${promotion.toStringAsFixed(0)}',
+                  Colors.orange,
+                ),
                 const Divider(),
-                _buildSummaryRow('Total', '\$${total.toStringAsFixed(0)}', const Color(0xFF4C7B42), isTotal: true),
+                _buildSummaryRow(
+                  'Total',
+                  '\$${total.toStringAsFixed(0)}',
+                  const Color(0xFF4C7B42),
+                  isTotal: true,
+                ),
               ],
             ),
           ),
@@ -220,8 +298,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     );
   }
 
-  // Widget auxiliar para las filas de resumen de precios
-  Widget _buildSummaryRow(String label, String value, Color valueColor, {bool isTotal = false}) {
+  Widget _buildSummaryRow(
+    String label,
+    String value,
+    Color valueColor, {
+    bool isTotal = false,
+  }) {
+    // ... (implementación de _buildSummaryRow) ...
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(

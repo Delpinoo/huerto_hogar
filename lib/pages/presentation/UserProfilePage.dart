@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // Corrección ANR
+import 'package:cached_network_image/cached_network_image.dart'; 
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart'; 
+import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart'; // Importamos tu BotonAtras
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
@@ -11,13 +12,35 @@ class UserProfilePage extends StatefulWidget {
 
 class _UserProfilePageState extends State<UserProfilePage> {
   
+  // Estado para la barra de navegación. 'Profile' es la cuarta pestaña (índice 3)
   int _selectedIndex = 3; 
   final Color _primaryGreen = const Color(0xFF4C7B42); // Verde oscuro principal
 
+  // Mapeo de índices a las rutas definidas en tu MaterialApp (MyApp o SearchApp)
+  final List<String> _routes = const [
+    '/',          // 0: Home (WelcomePage)
+    '/search',    // 1: Search
+    '/carrito',   // 2: Cart (ShoppingCartPage)
+    '/profile',
+    ''   // 3: Profile (UserProfilePage)
+  ];
+
   void _onTabChange(int index) {
+    if (_selectedIndex == index) {
+      return; // No navegar si ya estamos en la pestaña
+    }
+
+    // 1. Actualizar el estado (para que la pestaña se ilumine)
     setState(() {
       _selectedIndex = index;
     });
+
+    // 2. Navegar a la nueva ruta y limpiar la pila de rutas.
+    Navigator.pushNamedAndRemoveUntil(
+      context, 
+      _routes[index], 
+      (route) => false, // Remueve todas las rutas anteriores
+    );
   }
 
   @override
@@ -29,11 +52,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // Ícono de retroceso
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.pop(context),
-        ),
+        // *** REEMPLAZO POR BOTONATRAS ***
+        leading: const BotonAtras(),
         // Ícono de edición (lápiz)
         actions: [
           IconButton(
@@ -71,10 +91,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ],
         ),
       ),
-      // CustomNavbar implementado
+      // *** CUSTOMNAVBAR IMPLEMENTADO CON NAVEGACIÓN COMPLETA ***
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
-        onTabChange: _onTabChange,
+        onTabChange: _onTabChange, // Usa la lógica de pushNamedAndRemoveUntil
         pages: const [], 
       ),
     );
@@ -82,15 +102,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   // --- WIDGETS AUXILIARES ---
 
-  Widget _buildProfileHeader(BuildContext context) {    // URL de imagen simulada para CachedNetworkImage
-    // URL de imagen simulada para CachedNetworkImage
+  Widget _buildProfileHeader(BuildContext context) { 
     const String profileImageUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
     return Center(
       child: Column(
         children: [
           ClipOval(
-            child: CachedNetworkImage( // Aplicando la corrección ANR
+            child: CachedNetworkImage( 
               imageUrl: profileImageUrl,
               width: 100,
               height: 100,
@@ -180,7 +199,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Widget _buildRecommendations() {
-   
+    
     final List<Map<String, dynamic>> recommendations = [
       {'title': 'Kale', 'imageUrl': 'https://images.unsplash.com/photo-1596707447668-525e982f170d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
       {'title': 'Salad Mix', 'imageUrl': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},

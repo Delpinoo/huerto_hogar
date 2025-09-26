@@ -41,6 +41,10 @@ class CustomNavbar extends StatelessWidget {
           icon: Icons.person,
           text: 'Profile',
         ),
+        GButton(
+          icon: Icons.more_horiz,
+          text: 'Other',
+        ),
       ],
     );
   }

@@ -1,9 +1,52 @@
 import 'package:flutter/material.dart';
-// Importamos el CustomNavbar
+import 'package:huerto_hogar/pages/presentation/ShoppingCartPage.dart';
+import 'package:huerto_hogar/pages/presentation/UserProfilePage.dart';
+import 'package:huerto_hogar/pages/presentation/welcome_page.dart';
+import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart'; 
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart'; 
-// No necesitamos CachedNetworkImage aquí, ya que usamos Image.asset
+
+// --- WIDGET DE EJEMPLO PARA LAS OTRAS PESTAÑAS (DEBE EXISTIR EN TUS RUTAS) ---
+class DummyHomePage extends StatelessWidget {
+  const DummyHomePage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Home/Catálogo')),
+      body: const Center(child: Text('Página Principal')),
+      // Nota: Aquí también se colocaría el CustomNavbar
+    );
+  }
+}
+
+class DummyCartPage extends StatelessWidget {
+  const DummyCartPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Carrito de Compras')),
+      body: const Center(child: Text('Carrito')),
+      // Nota: Aquí también se colocaría el CustomNavbar
+    );
+  }
+}
+
+class DummyProfilePage extends StatelessWidget {
+  const DummyProfilePage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Mi Perfil')),
+      body: const Center(child: Text('Perfil de Usuario')),
+      // Nota: Aquí también se colocaría el CustomNavbar
+    );
+  }
+}
+
+
+// --- 1. CLASE PRINCIPAL (SearchApp) MODIFICADA PARA USAR RUTAS ---
 
 void main() {
+  // Aseguramos que la aplicación inicie con una estructura de rutas.
   runApp(const SearchApp());
 }
 
@@ -14,8 +57,17 @@ class SearchApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // Usamos la versión Stateful para la navegación
-      home: const SearchScreen(), 
+      title: 'Huerto Hogar',
+
+      // 1. Definimos las rutas que vamos a usar en la CustomNavbar
+      routes: {
+        '/': (context) => const WelcomePage(),      
+        '/search': (context) => const SearchScreen(), 
+        '/carrito': (context) => const ShoppingCartPage(),  
+        '/profile': (context) => const UserProfilePage(),  
+      },
+      initialRoute: '/', 
+      
       theme: ThemeData(
         primaryColor: Colors.green[800],
         scaffoldBackgroundColor: Colors.grey[100],
@@ -48,7 +100,9 @@ class SearchApp extends StatelessWidget {
   }
 }
 
-// 1. CONVERTIR A STATEFULWIDGET
+
+// --- 2. SEARCH SCREEN CON LÓGICA DE NAVIGATOR ---
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -57,14 +111,34 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  // Estado para la barra de navegación
-  int _selectedIndex = 1; // Asume que 'Categories' (o búsqueda) es el índice 1
+  // Estado para la barra de navegación. Se inicializa en 1 (Search)
+  int _selectedIndex = 1; 
+
+  // Mapeo de índices a rutas
+  final List<String> _routes = const [
+    '/',          
+    '/search',    
+    '/carrito',   
+    '/profile',   
+  ];
 
   void _onTabChange(int index) {
+    if (_selectedIndex == index) {
+      return; 
+    }
+    
+    // 1. Actualizar el estado para que la pestaña se ilumine
     setState(() {
       _selectedIndex = index;
     });
-    // Lógica de navegación real (ej. Navigator) iría aquí.
+
+    // 2. Navegar a la nueva ruta y limpiar la pila para que no quede la página anterior.
+    // Esto es ideal para la navegación principal de la barra.
+    Navigator.pushNamedAndRemoveUntil(
+      context, 
+      _routes[index], 
+      (route) => false, // Remueve todas las rutas anteriores
+    );
   }
 
   @override
@@ -73,12 +147,8 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: const Text('Búsqueda de Productos'),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.green[800]),
-          onPressed: () {
-            // Lógica para retroceder
-          },
-        ),
+        // Usamos el widget BotonAtras
+        leading: const BotonAtras(),
       ),
       body: Column(
         children: [
@@ -121,16 +191,16 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-      // 2. REEMPLAZAR EL BottomNavigationBar ESTÁNDAR POR CUSTOMNAVBAR
+      // 3. IMPLEMENTACIÓN DEL CUSTOMNAVBAR con la lógica de navegación
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
-        onTabChange: _onTabChange,
-        pages: const [], // Debe llenarse con los widgets de las páginas principales
+        onTabChange: _onTabChange, // Aquí se ejecuta la navegación
+        pages: const [], 
       ),
     );
   }
 
-  // Los métodos auxiliares se mantienen dentro de _SearchScreenState
+  // --- MÉTODOS AUXILIARES (Sin Cambios) ---
 
   Widget _buildSearchBar(BuildContext context) {
     return Padding(
@@ -191,7 +261,6 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  // El _buildProductCard se mantiene con Image.asset, ya que no presenta riesgo ANR.
   Widget _buildProductCard(
       String category, String name, String imageUrl, String price) {
     return Card(
