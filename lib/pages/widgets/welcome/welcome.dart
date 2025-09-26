@@ -20,7 +20,7 @@ class WelcomeButtons extends StatelessWidget {
         const SizedBox(height: 10),
         OutlinedButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/search');
+            Navigator.pushNamed(context, '/catalogo');
             
           },
           style: OutlinedButton.styleFrom(

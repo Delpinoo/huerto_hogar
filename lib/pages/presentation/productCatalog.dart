@@ -2,24 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
 import 'package:huerto_hogar/pages/widgets/ProductCategory/productCard.dart';
 import 'package:huerto_hogar/pages/widgets/ProductCategory/productCategoryChips.dart';
-
-// ⚠️ WIDGETS TEMPORALES para las otras 3 páginas (necesarios para la navegación)
-// Si no quieres crear archivos para ellos, déjalos aquí:
-class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Página de Búsqueda'));
-}
-class CartPage extends StatelessWidget {
-  const CartPage({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Página de Carrito'));
-}
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Página de Perfil'));
-}
+import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart'; 
 
 class ProductCatalogPage extends StatefulWidget {
   const ProductCatalogPage({Key? key}) : super(key: key);
@@ -29,20 +12,35 @@ class ProductCatalogPage extends StatefulWidget {
 }
 
 class _ProductCatalogPageState extends State<ProductCatalogPage> {
-  int _selectedIndex = 0;
+  // 1. Índice: El catálogo es la página principal, usualmente el índice 0.
+  int _selectedIndex = 0; 
 
-  // 1. LISTA DE PÁGINAS: Debe tener 4 elementos para coincidir con el Navbar.
-  final List<Widget> _pages = const [
-    ProductCatalogBody(), // Índice 0: El contenido del Catálogo
-    SearchPage(),         // Índice 1
-    CartPage(),           // Índice 2
-    ProfilePage(),        // Índice 3
+  // 2. Lista de RUTAS nombradas (DEBE ser la misma en todas las páginas con CustomNavbar)
+  final List<String> _routes = const [
+    '/',          // 0: Catálogo/Home
+    '/catalogo',    // 1: Catalogo
+    '/carrito',   // 2: Cart
+    '/profile',   // 3: Profile
   ];
-  
+
+  // 3. Lógica de navegación del CustomNavbar: Navegar a la ruta y limpiar el historial
   void _onTabChange(int index) {
+    if (_selectedIndex == index) {
+      return; 
+    }
+
+    // Actualiza el estado para que el CustomNavbar resalte la pestaña correcta
     setState(() {
       _selectedIndex = index;
     });
+
+    // Navegar a la nueva ruta y ELIMINAR TODAS las rutas anteriores de la pila.
+    // Esto es el comportamiento esperado para un Bottom Navigation Bar.
+    Navigator.pushNamedAndRemoveUntil(
+      context, 
+      _routes[index], 
+      (route) => false, 
+    );
   }
 
   @override
@@ -56,38 +54,46 @@ class _ProductCatalogPageState extends State<ProductCatalogPage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.black87),
-          onPressed: () {},
+        
+        // Botón de Menú (Leading) para la página principal
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu, color: Colors.black87),
+            onPressed: () {
+              // Lógica para abrir el menú lateral (Drawer)
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
+
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black87),
-            onPressed: () {},
+            onPressed: () {
+              // Navegar al carrito (sin limpiar la pila, para poder volver)
+              Navigator.pushNamed(context, '/carrito'); 
+            },
           ),
         ],
       ),
       
-      // 2. EL CUERPO MUESTRA LA PÁGINA SELECCIONADA
-      // Aquí es donde el estado _selectedIndex funciona correctamente:
-      body: _pages[_selectedIndex], 
+      // 4. El body ahora solo muestra el contenido del catálogo
+      body: const ProductCatalogBody(), 
 
-      // 3. BARRA DE NAVEGACIÓN
-      // Pasamos una lista vacía para satisfacer el constructor (si es requerido)
-      // pero el body ya no depende de esta propiedad.
+      // 5. BARRA DE NAVEGACIÓN
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
-        onTabChange: _onTabChange,
-        pages: const [], // <--- MANTENEMOS ESTA LÍNEA PARA NO ROMPER EL CONSTRUCTOR
+        onTabChange: _onTabChange, // Usa la lógica de navegación por rutas
+        pages: const [], // No es necesario pasar widgets si usas navegación por rutas
       ),
     );
   }
 }
 
-// 4. WIDGET SEPARADO PARA EL CONTENIDO DEL CATÁLOGO
+// WIDGET SEPARADO PARA EL CONTENIDO DEL CATÁLOGO (Sin Cambios)
 class ProductCatalogBody extends StatelessWidget {
   const ProductCatalogBody({super.key});
-
+  // ... (código del body permanece igual) ...
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -117,13 +123,13 @@ class ProductCatalogBody extends StatelessWidget {
           // Chips de Categoría
           const ProductCategoryChips(),
           
-          // Lista de Productos (Asegúrate que el ProductCard use un placeholder y no Image.network)
+          // Lista de Productos
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: const [
                 ProductCard(
-                  imageUrl: '', // Valor dummy
+                  imageUrl: '', 
                   badgeText: 'OFERTA',
                   title: 'DEL CAMPO',
                   description: 'Fresas Orgánicas',
@@ -131,7 +137,7 @@ class ProductCatalogBody extends StatelessWidget {
                 ),
 
                 ProductCard(
-                  imageUrl: '', // Valor dummy
+                  imageUrl: '', 
                   badgeText: 'COSECHA LOCAL',
                   title: 'COSECHA LOCAL',
                   description: 'Tomates Medallón',

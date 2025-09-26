@@ -5,6 +5,7 @@ import 'package:huerto_hogar/pages/presentation/UserProfilePage.dart';
 import 'package:huerto_hogar/pages/presentation/about_us.dart';
 import 'package:huerto_hogar/pages/presentation/blog.dart';
 import 'package:huerto_hogar/pages/presentation/order_confirmation_page.dart';
+import 'package:huerto_hogar/pages/presentation/productCatalog.dart';
 import 'package:huerto_hogar/pages/presentation/review_page.dart';
 import 'package:huerto_hogar/pages/presentation/welcome_page.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
        
         '/': (context) => const WelcomePage(), // Home 
-        '/search': (context) => const SearchApp(), 
+        '/catalogo': (context) => const ProductCatalogPage(), 
         '/carrito': (context) => const ShoppingCartPage(), 
         '/profile': (context) => const UserProfilePage(),
         '/blog': (context) => const BlogPage(),
