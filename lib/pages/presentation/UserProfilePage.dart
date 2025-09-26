@@ -10,8 +10,7 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  // Estado para la barra de navegación
-  // Asume que 'Profile' es la cuarta pestaña (índice 3)
+  
   int _selectedIndex = 3; 
   final Color _primaryGreen = const Color(0xFF4C7B42); // Verde oscuro principal
 
@@ -19,7 +18,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
     setState(() {
       _selectedIndex = index;
     });
-    // *** Lógica de Navegación: Aquí se debe cambiar a la pantalla correspondiente ***
   }
 
   @override
@@ -77,7 +75,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
         onTabChange: _onTabChange,
-        pages: const [], // Asegúrate de pasar la lista de widgets de las páginas aquí
+        pages: const [], 
       ),
     );
   }
@@ -182,7 +180,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Widget _buildRecommendations() {
-    // Datos simulados para las tarjetas de recomendación (con URLs)
+   
     final List<Map<String, dynamic>> recommendations = [
       {'title': 'Kale', 'imageUrl': 'https://images.unsplash.com/photo-1596707447668-525e982f170d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
       {'title': 'Salad Mix', 'imageUrl': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
@@ -190,7 +188,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     ];
 
     return SizedBox(
-      height: 150, // Altura fija para el scroll horizontal
+      height: 150, 
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -206,7 +204,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage( // Aplicando la corrección ANR aquí también
+              child: CachedNetworkImage( 
                 imageUrl: item['imageUrl'],
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
