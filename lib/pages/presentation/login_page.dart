@@ -14,11 +14,9 @@ class LoginPage extends StatelessWidget {
 
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        // Para que el AppBar no tenga un color sólido
         backgroundColor: Colors.transparent,
-        // Elimina la sombra del AppBar, es alinea blana molesta
         elevation: 0, 
         leading: const BotonAtras()
       ),
@@ -48,7 +46,7 @@ class LoginPage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-             SizedBox(
+              SizedBox(
               width: 350,
               child: Text("Inicia seison para poder comprar productos en Huerto hogar",
               style: TextStyle(
@@ -72,5 +70,5 @@ class LoginPage extends StatelessWidget {
       ),
     )
     );
+    }
   }
-}

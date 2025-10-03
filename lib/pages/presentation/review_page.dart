@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:huerto_hogar/pages/widgets/review_products/review.dart';
 import 'package:huerto_hogar/pages/widgets/review_products/review_card.dart';
-import 'package:google_nav_bar/google_nav_bar.dart'; // Importa el paquete GNav
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class ReviewProductPage extends StatefulWidget {
   const ReviewProductPage({super.key});
@@ -11,17 +11,12 @@ class ReviewProductPage extends StatefulWidget {
 }
 
 class ReviewProductPageState extends State<ReviewProductPage> {
-  int _selectedIndex = 0; // Índice de la página actual
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    // Aquí iría tu lógica de navegación a otras páginas.
-    // Por ejemplo:
-    // if (index == 0) {
-    //   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-    // }
   }
 
   @override
@@ -53,7 +48,6 @@ class ReviewProductPageState extends State<ReviewProductPage> {
               ),
             ),
             const SizedBox(height: 20),
-            // Widget de calificación y caja de texto
             const RatingReview(),
             const SizedBox(height: 20),
             const Text(
@@ -64,13 +58,11 @@ class ReviewProductPageState extends State<ReviewProductPage> {
               ),
             ),
             const SizedBox(height: 10),
-            // Las tarjetas de reseña
             const ReviewCard(),
             const ReviewCard(),
           ],
         ),
       ),
-      // Aquí está el BottomNavigationBar
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,

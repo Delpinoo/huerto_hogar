@@ -1,9 +1,41 @@
+
+
 import 'package:flutter/material.dart';
-// Asegúrate de que esta ruta sea correcta para tu CustomNavbar
+
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
 
-class ProductDetailsPage extends StatelessWidget {
+class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({Key? key}) : super(key: key);
+
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  int _selectedIndex = 0;
+
+  final List<String> _routes = const [
+    '/', 
+    '/search', 
+    '/carrito',
+    '/profile',
+  ];
+
+  void _onTabChange(int index) {
+    if (_selectedIndex == index) return;
+    
+    if (_routes[index] == ModalRoute.of(context)?.settings.name) return;
+
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    Navigator.pushNamedAndRemoveUntil(
+      context, 
+      _routes[index], 
+      (route) => false, 
+    );
+  }
 
   final String productName = 'Organic Tomatoes';
   final String description = 
@@ -11,9 +43,7 @@ class ProductDetailsPage extends StatelessWidget {
       'sustainable practices, ensuring the highest quality and flavor.';
   final String price = '\$2.99/lb';
   final String origin = 'Andes Farms';
-  
-  // ⚠️ Cambia 'assets/images/tomatoes.png' por la ruta y el nombre de tu archivo.
-  final String localImageUrl = 'assets/images/tomatoes.png'; 
+  final String localImageUrl = 'assets/images/tomate.jpg'; 
       
   @override
   Widget build(BuildContext context) {
@@ -23,10 +53,12 @@ class ProductDetailsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: Icon(Icons.shopping_cart_outlined),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+              Navigator.pushNamed(context, '/carrito');
+            },
           ),
         ],
         backgroundColor: Colors.transparent,
@@ -37,22 +69,19 @@ class ProductDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. Imagen del Producto (Cargada desde la carpeta de assets)
             AspectRatio(
               aspectRatio: 1.2,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   image: DecorationImage(
-                    // ✅ La solución es usar Image.asset
-                    image: AssetImage('assets/images/tomate.jpg'), 
+                    image: AssetImage(localImageUrl), 
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
             
-            // 2. Detalles del Producto
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
@@ -88,9 +117,8 @@ class ProductDetailsPage extends StatelessWidget {
                   
                   _buildDetailRow(context, 'Price', price),
                   const SizedBox(height: 8),
-
                   _buildDetailRow(context, 'Origin', origin),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -101,8 +129,6 @@ class ProductDetailsPage extends StatelessWidget {
       bottomNavigationBar: _buildBottomBar(context),
     );
   }
-  
-  // --- Widgets Auxiliares ---
   
   Widget _buildDetailRow(BuildContext context, String label, String value) {
     return Row(
@@ -127,15 +153,15 @@ class ProductDetailsPage extends StatelessWidget {
   }
   
   Widget _buildBottomBar(BuildContext context) {
-    const int dummySelectedIndex = 0; 
-    
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+          padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 12.0),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/carrito');
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green.shade600,
               minimumSize: const Size(double.infinity, 50),
@@ -152,10 +178,8 @@ class ProductDetailsPage extends StatelessWidget {
         ),
 
         CustomNavbar(
-          selectedIndex: dummySelectedIndex,
-          onTabChange: (index) {
-            print('Intentando navegar a índice $index desde Detalles');
-          },
+          selectedIndex: _selectedIndex,
+          onTabChange: _onTabChange,
           pages: const [],
         ),
       ],

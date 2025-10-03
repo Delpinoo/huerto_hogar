@@ -1,8 +1,6 @@
-// En lib/pages/blog_page.dart
 import 'package:flutter/material.dart';
 import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart';
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
-// Ya NO necesitamos: import 'package:cached_network_image/cached_network_image.dart'; 
 
 class BlogPage extends StatefulWidget {
   const BlogPage({super.key});
@@ -12,30 +10,26 @@ class BlogPage extends StatefulWidget {
 }
 
 class _BlogPageState extends State<BlogPage> {
-  // Estado para la barra de navegación
   int _selectedIndex = 1;
 
   void _onTabChange(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    // Lógica de navegación.
   }
 
-  // Lista de artículos del blog usando rutas de ASSETS locales
   final List<Map<String, String>> _blogArticles = const [
     {
       'title': 'Los Beneficios de Comer Productos Locales',
       'description': 'Descubre por qué elegir frutas y verduras de origen local no solo es bueno para tu salud, sino que también apoya a tu comunidad y al medio ambiente.',
       'readTime': '3 min de lectura',
-      // Usaremos la imagen que mostraste o una similar para el ejemplo
       'imageUrl': 'assets/images/cultivos-de-la-huerta.jpg', 
     },
     {
       'title': 'Prácticas de Cultivo Sostenible',
       'description': 'Aprende sobre los métodos que los agricultores están utilizando para proteger el medio ambiente y producir alimentos saludables para las generaciones venideras.',
       'readTime': '5 min de lectura',
-      'imageUrl': 'assets/images/cajatomates.png', // Usando otro asset existente como ejemplo
+      'imageUrl': 'assets/images/cajatomates.png',
     },
     {
       'title': 'Las 5 Frutas Más Saludables que Debes Incluir en Tu Dieta',
@@ -74,7 +68,6 @@ class _BlogPageState extends State<BlogPage> {
           );
         },
       ),
-      // Implementación de la barra de navegación
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
         onTabChange: _onTabChange,
@@ -83,13 +76,12 @@ class _BlogPageState extends State<BlogPage> {
     );
   }
 
-  // Widget _buildBlogCard con implementación de Image.asset
   Widget _buildBlogCard(
     BuildContext context,
     String title,
     String description,
     String readTime,
-    String imageUrl, // Ahora es una ruta local
+    String imageUrl,
   ) {
     return Card(
       elevation: 4,
@@ -99,13 +91,11 @@ class _BlogPageState extends State<BlogPage> {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-            // CAMBIO CLAVE: Usamos Image.asset en lugar de CachedNetworkImage
             child: Image.asset( 
               imageUrl,
               height: 200,
               width: double.infinity,
               fit: BoxFit.cover,
-              // Los Assets cargan inmediatamente, por lo que no necesitamos placeholder/errorWidget.
             ),
           ),
           Padding(
@@ -116,7 +106,6 @@ class _BlogPageState extends State<BlogPage> {
                 Text(
                   title,
                   style: const TextStyle(
-                    // Color verde suave, similar a los ejemplos anteriores
                     color: Color.fromARGB(255, 116, 175, 126), 
                     fontSize: 22,
                     fontWeight: FontWeight.bold,

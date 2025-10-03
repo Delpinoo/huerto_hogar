@@ -21,7 +21,7 @@ class CustomNavbar extends StatelessWidget {
       backgroundColor: Colors.white,
       color: Colors.grey,
       activeColor: Colors.green,
-      tabBackgroundColor: Colors.green.withValues(alpha: 0.1),
+      tabBackgroundColor: Colors.green.withOpacity(0.1), // Usamos withOpacity para que sea válido
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       gap: 8,
       tabs: const [
@@ -33,18 +33,17 @@ class CustomNavbar extends StatelessWidget {
           icon: Icons.search,
           text: 'Search',
         ),
+
         GButton(
           icon: Icons.shopping_cart,
           text: 'Cart',
         ),
+
         GButton(
           icon: Icons.person,
           text: 'Profile',
         ),
-        GButton(
-          icon: Icons.more_horiz,
-          text: 'Other',
-        ),
+
       ],
     );
   }

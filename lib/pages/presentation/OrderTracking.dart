@@ -14,10 +14,21 @@ class OrderTrackingPage extends StatefulWidget {
 class _OrderTrackingPageState extends State<OrderTrackingPage> {
   int _selectedIndex = 0;
 
+  final List<String> _routes = const [
+    '/',
+    '/search',
+    '/carrito',
+    '/profile',
+  ];
+
   void _onTabChange(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (_selectedIndex == index) return;
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      _routes[index],
+      (route) => false,
+    );
   }
 
   @override
@@ -46,7 +57,6 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
           ),
         ),
       ),
-      // Aquí está la corrección: remueve el Padding y llama al CustomNavbar directamente
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
         onTabChange: _onTabChange,

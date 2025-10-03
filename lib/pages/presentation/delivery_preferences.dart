@@ -14,7 +14,7 @@ class DeliveryPreferences extends StatefulWidget {
 class _DeliveryPreferencesState extends State<DeliveryPreferences> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDate;
-  int _selectedIndex = 0; // Agrega el estado para el navbar
+  int _selectedIndex = 0;
 
   void _onTabChange(int index) {
     setState(() {
@@ -34,7 +34,7 @@ class _DeliveryPreferencesState extends State<DeliveryPreferences> {
         leading: const BotonAtras(),
       ),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      body: SingleChildScrollView(  // <-- Envuelve todo el contenido con SingleChildScrollView
+      body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
             width: 400,
@@ -43,17 +43,17 @@ class _DeliveryPreferencesState extends State<DeliveryPreferences> {
               children: [
                 const SizedBox(height: 30),
                 const Padding(
-                  padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                  'Seleccione la fecha',
-                  style: TextStyle(fontSize: 25),
+                    'Seleccione la fecha',
+                    style: TextStyle(fontSize: 25),
+                  ),
                 ),
-                ), 
                 
                 Card(
                   margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   
-                  elevation: 5, // La elevación controla la intensidad de la sombra
+                  elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -99,13 +99,12 @@ class _DeliveryPreferencesState extends State<DeliveryPreferences> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: SizedBox(
-                            width: double.infinity, // <-- Hace que el SizedBox ocupe el ancho disponible
+                            width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
                                 foregroundColor: Colors.white,
-                                // Eliminamos el padding horizontal del botón para controlarlo desde fuera
                                 padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15), 
                               ),
                               child: const Text(
@@ -118,9 +117,9 @@ class _DeliveryPreferencesState extends State<DeliveryPreferences> {
                       ),
                       const SizedBox(height: 5,),
                       
-                      Align( // <-- Align la pone en la parte de abajo
+                      Align(
                       alignment: Alignment.bottomCenter,
-                      child: SafeArea( // <-- Mantiene la barra lejos de los botones del sistema
+                      child: SafeArea(
                         child: CustomNavbar(
                           selectedIndex: _selectedIndex,
                           onTabChange: _onTabChange,

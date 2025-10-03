@@ -1,8 +1,10 @@
+
+
 import 'package:flutter/material.dart';
+
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
 import 'package:huerto_hogar/pages/widgets/ProductCategory/productCard.dart';
 import 'package:huerto_hogar/pages/widgets/ProductCategory/productCategoryChips.dart';
-import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart'; 
 
 class ProductCatalogPage extends StatefulWidget {
   const ProductCatalogPage({Key? key}) : super(key: key);
@@ -12,34 +14,37 @@ class ProductCatalogPage extends StatefulWidget {
 }
 
 class _ProductCatalogPageState extends State<ProductCatalogPage> {
-  // 1. Índice: El catálogo es la página principal, usualmente el índice 0.
   int _selectedIndex = 0; 
 
-  // 2. Lista de RUTAS nombradas (DEBE ser la misma en todas las páginas con CustomNavbar)
   final List<String> _routes = const [
-    '/',          // 0: Catálogo/Home
-    '/catalogo',    // 1: Catalogo
-    '/carrito',   // 2: Cart
-    '/profile',   // 3: Profile
+    '/', 
+    '/search', 
+    '/carrito', 
+    '/profile',
   ];
 
-  // 3. Lógica de navegación del CustomNavbar: Navegar a la ruta y limpiar el historial
   void _onTabChange(int index) {
     if (_selectedIndex == index) {
       return; 
     }
 
-    // Actualiza el estado para que el CustomNavbar resalte la pestaña correcta
     setState(() {
       _selectedIndex = index;
     });
 
-    // Navegar a la nueva ruta y ELIMINAR TODAS las rutas anteriores de la pila.
-    // Esto es el comportamiento esperado para un Bottom Navigation Bar.
     Navigator.pushNamedAndRemoveUntil(
       context, 
       _routes[index], 
       (route) => false, 
+    );
+  }
+
+  void _handleShare() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('¡Gracias por compartir HuertoHogar!'),
+        duration: Duration(seconds: 2),
+      ),
     );
   }
 
@@ -55,12 +60,10 @@ class _ProductCatalogPageState extends State<ProductCatalogPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         
-        // Botón de Menú (Leading) para la página principal
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu, color: Colors.black87),
             onPressed: () {
-              // Lógica para abrir el menú lateral (Drawer)
               Scaffold.of(context).openDrawer();
             },
           ),
@@ -70,30 +73,102 @@ class _ProductCatalogPageState extends State<ProductCatalogPage> {
           IconButton(
             icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black87),
             onPressed: () {
-              // Navegar al carrito (sin limpiar la pila, para poder volver)
               Navigator.pushNamed(context, '/carrito'); 
             },
+          ),
+          
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.black87),
+            onSelected: (String result) {
+              switch (result) {
+                case 'blog':
+                  Navigator.pushNamed(context, '/blog');
+                  break;
+                case 'impacto':
+                  Navigator.pushNamed(context, '/impacto');
+                  break;
+                case 'share':
+                  _handleShare();
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'blog',
+                child: Text('Blog'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'impacto',
+                child: Text('Impacto Ambiental'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'share',
+                child: Text('Compartir App'),
+              ),
+            ],
           ),
         ],
       ),
       
-      // 4. El body ahora solo muestra el contenido del catálogo
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF4CAF50),
+              ),
+              child: Text(
+                'Menú HuertoHogar',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.article),
+              title: const Text('Blog'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/blog');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.spa),
+              title: const Text('Impacto Ambiental'),
+              onTap: () {
+                Navigator.pop(context); 
+                Navigator.pushNamed(context, '/impacto');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.share),
+              title: const Text('Compartir App'),
+              onTap: () {
+                Navigator.pop(context); 
+                _handleShare();
+              },
+            ),
+          ],
+        ),
+      ),
+
       body: const ProductCatalogBody(), 
 
-      // 5. BARRA DE NAVEGACIÓN
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
-        onTabChange: _onTabChange, // Usa la lógica de navegación por rutas
-        pages: const [], // No es necesario pasar widgets si usas navegación por rutas
+        onTabChange: _onTabChange, 
+        pages: const [], 
       ),
     );
   }
 }
 
-// WIDGET SEPARADO PARA EL CONTENIDO DEL CATÁLOGO (Sin Cambios)
+// WIDGET SEPARADO PARA EL CONTENIDO DEL CATÁLOGO (CON NAVEGACIÓN)
 class ProductCatalogBody extends StatelessWidget {
   const ProductCatalogBody({super.key});
-  // ... (código del body permanece igual) ...
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -127,21 +202,39 @@ class ProductCatalogBody extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
-              children: const [
-                ProductCard(
-                  imageUrl: '', 
-                  badgeText: 'OFERTA',
-                  title: 'DEL CAMPO',
-                  description: 'Fresas Orgánicas',
-                  price: '\$4.990',
+              children: [
+                // Producto 1 con navegación
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/product-details');
+                  },
+                  customBorder: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const ProductCard(
+                    imageUrl: 'assets/images/cultivos-de-la-huerta.jpg', 
+                    badgeText: 'OFERTA',
+                    title: 'DEL CAMPO',
+                    description: 'Fresas Orgánicas',
+                    price: '\$4.990',
+                  ),
                 ),
 
-                ProductCard(
-                  imageUrl: '', 
-                  badgeText: 'COSECHA LOCAL',
-                  title: 'COSECHA LOCAL',
-                  description: 'Tomates Medallón',
-                  price: '\$2.490',
+                // Producto 2 con navegación
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/product-details');
+                  },
+                  customBorder: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const ProductCard(
+                    imageUrl: 'assets/images/cultivos-de-la-huerta.jpg', 
+                    badgeText: 'COSECHA LOCAL',
+                    title: 'COSECHA LOCAL',
+                    description: 'Tomates Medallón',
+                    price: '\$2.490',
+                  ),
                 ),
               ],
             ),

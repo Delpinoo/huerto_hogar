@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
 import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart';
-
-// *** IMPORTACIÓN NECESARIA PARA RESOLVER EL ERROR DE NAVEGACIÓN ***
-// Asegúrate de que esta ruta sea correcta en tu estructura de carpetas
 import 'package:huerto_hogar/pages/presentation/order_confirmation_page.dart';
 
 class ShoppingCartPage extends StatefulWidget {
@@ -15,15 +12,13 @@ class ShoppingCartPage extends StatefulWidget {
 }
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
-  // Estado para la barra de navegación. 'Cart' es la tercera pestaña (índice 2)
   int _selectedIndex = 2;
 
-  // Mapeo de índices a las rutas definidas en tu MaterialApp (SearchApp en este caso)
   final List<String> _routes = const [
-    '/', // 0: Home (WelcomePage)
-    '/search', // 1: Search
-    '/carrito', // 2: Cart (ShoppingCartPage)
-    '/profile', // 3: Profile (UserProfilePage)
+    '/catalogo',
+    '/search',
+    '/carrito',
+    '/profile',
   ];
 
   void _onTabChange(int index) {
@@ -42,9 +37,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     );
   }
 
-  // Lista de productos del carrito con datos simulados
   final List<Map<String, dynamic>> _cartItems = [
-    // ... (Lista de productos) ...
     {
       'Nombre': 'Manzanas organicas',
       'Cantidad': 2,
@@ -73,7 +66,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculo de precios simulado
     double subtotal = _cartItems.fold(
       0,
       (sum, item) => sum + (item['Precio'] * item['Cantidad']),
@@ -103,14 +95,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               children: [
                 ..._cartItems.map((item) => _buildCartItem(item)).toList(),
                 const SizedBox(height: 20),
-
                 _buildSummaryCard(subtotal, shipping, promotion, total),
                 const SizedBox(height: 100),
               ],
             ),
           ),
-
-          // Botón 'Proceed to Checkout' fijo en la parte inferior
           Positioned(
             bottom: 70,
             left: 0,
@@ -118,7 +107,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ElevatedButton(
-                // Lógica de navegación a la ruta que ya definiste en main.dart
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -128,7 +116,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4C7B42), // Verde oscuro
+                  backgroundColor: const Color(0xFF4C7B42),
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -143,7 +131,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           ),
         ],
       ),
-
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
         onTabChange: _onTabChange,
@@ -152,10 +139,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     );
   }
 
-  // --- MÉTODOS AUXILIARES (Omitidos por brevedad) ---
-
   Widget _buildCartItem(Map<String, dynamic> item) {
-    // ... (implementación de _buildCartItem) ...
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),
       elevation: 2,
@@ -164,7 +148,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
-            // IMAGEN: Usando CachedNetworkImage
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: CachedNetworkImage(
@@ -187,8 +170,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               ),
             ),
             const SizedBox(width: 12),
-
-            // DETALLES DEL PRODUCTO
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,8 +188,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 ],
               ),
             ),
-
-            // CONTROLES DE CANTIDAD
             Row(
               children: [
                 IconButton(
@@ -217,7 +196,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     color: Colors.grey,
                   ),
                   onPressed: () {
-                    // Lógica para decrementar cantidad
+                    
                   },
                 ),
                 Text(
@@ -231,9 +210,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                   icon: const Icon(
                     Icons.add_circle,
                     color: Color(0xFF4C7B42),
-                  ), // Verde oscuro
+                  ),
                   onPressed: () {
-                    // Lógica para incrementar cantidad
+                    
                   },
                 ),
               ],
@@ -250,7 +229,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     double promotion,
     double total,
   ) {
-    // ... (implementación de _buildSummaryCard) ...
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -304,7 +282,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     Color valueColor, {
     bool isTotal = false,
   }) {
-    // ... (implementación de _buildSummaryRow) ...
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(

@@ -1,107 +1,10 @@
+
+
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/ShoppingCartPage.dart';
-import 'package:huerto_hogar/pages/presentation/UserProfilePage.dart';
-import 'package:huerto_hogar/pages/presentation/welcome_page.dart';
-import 'package:huerto_hogar/pages/widgets/Boton_atras/boton_atras.dart'; 
+
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart'; 
 
-// --- WIDGET DE EJEMPLO PARA LAS OTRAS PESTAÑAS (DEBE EXISTIR EN TUS RUTAS) ---
-class DummyHomePage extends StatelessWidget {
-  const DummyHomePage({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home/Catálogo')),
-      body: const Center(child: Text('Página Principal')),
-      // Nota: Aquí también se colocaría el CustomNavbar
-    );
-  }
-}
-
-class DummyCartPage extends StatelessWidget {
-  const DummyCartPage({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Carrito de Compras')),
-      body: const Center(child: Text('Carrito')),
-      // Nota: Aquí también se colocaría el CustomNavbar
-    );
-  }
-}
-
-class DummyProfilePage extends StatelessWidget {
-  const DummyProfilePage({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Mi Perfil')),
-      body: const Center(child: Text('Perfil de Usuario')),
-      // Nota: Aquí también se colocaría el CustomNavbar
-    );
-  }
-}
-
-
-// --- 1. CLASE PRINCIPAL (SearchApp) MODIFICADA PARA USAR RUTAS ---
-
-void main() {
-  // Aseguramos que la aplicación inicie con una estructura de rutas.
-  runApp(const SearchApp());
-}
-
-class SearchApp extends StatelessWidget {
-  const SearchApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Huerto Hogar',
-
-      // 1. Definimos las rutas que vamos a usar en la CustomNavbar
-      routes: {
-        '/': (context) => const WelcomePage(),      
-        '/search': (context) => const SearchScreen(), 
-        '/carrito': (context) => const ShoppingCartPage(),  
-        '/profile': (context) => const UserProfilePage(),  
-      },
-      initialRoute: '/', 
-      
-      theme: ThemeData(
-        primaryColor: Colors.green[800],
-        scaffoldBackgroundColor: Colors.grey[100],
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
-          elevation: 0,
-          titleTextStyle: TextStyle(
-            color: Colors.green[800],
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        textTheme: TextTheme(
-          titleLarge: TextStyle(
-            color: Colors.green[800],
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-          bodyMedium: TextStyle(
-            color: Colors.green[800],
-            fontSize: 16,
-          ),
-          titleMedium: TextStyle(
-            color: Colors.grey[600],
-            fontSize: 14,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-// --- 2. SEARCH SCREEN CON LÓGICA DE NAVIGATOR ---
+// --- WIDGET DE LA PANTALLA PRINCIPAL ---
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -114,12 +17,12 @@ class _SearchScreenState extends State<SearchScreen> {
   // Estado para la barra de navegación. Se inicializa en 1 (Search)
   int _selectedIndex = 1; 
 
-  // Mapeo de índices a rutas
+  // Mapeo de índices a rutas (4 elementos)
   final List<String> _routes = const [
-    '/',          
-    '/search',    
-    '/carrito',   
-    '/profile',   
+    '/catalogo', // 0: Home/Catálogo
+    '/search', // 1: Search
+    '/carrito', // 2: Cart
+    '/profile', // 3: Profile
   ];
 
   void _onTabChange(int index) {
@@ -127,91 +30,124 @@ class _SearchScreenState extends State<SearchScreen> {
       return; 
     }
     
-    // 1. Actualizar el estado para que la pestaña se ilumine
+    // Si la página actual es la misma, no navegamos
+    if (_routes[index] == ModalRoute.of(context)?.settings.name) {
+      return;
+    }
+
     setState(() {
       _selectedIndex = index;
     });
 
-    // 2. Navegar a la nueva ruta y limpiar la pila para que no quede la página anterior.
-    // Esto es ideal para la navegación principal de la barra.
+    // Navegar a la nueva ruta y limpiar la pila
     Navigator.pushNamedAndRemoveUntil(
       context, 
       _routes[index], 
-      (route) => false, // Remueve todas las rutas anteriores
+      (route) => false, 
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    const Color primaryGreen = Color(0xFF388E3C);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Búsqueda de Productos'),
+        title: const Text('Búsqueda de Productos', style: TextStyle(color: primaryGreen)),
         centerTitle: true,
-        // Usamos el widget BotonAtras
-        leading: const BotonAtras(),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
-      body: Column(
-        children: [
-          _buildSearchBar(context),
-          _buildFilterChips(context),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              padding: const EdgeInsets.all(16.0),
-              childAspectRatio: 0.7,
-              mainAxisSpacing: 16.0,
-              crossAxisSpacing: 16.0,
-              children: [
-                _buildProductCard(
-                  'Organico',
-                  'Caja de tomates',
-                  'assets/images/cajatomates.png',
-                  '\$1.000 Pesos',
-                ),
-                _buildProductCard(
-                  'Local',
-                  'Tomate Cherry',
-                  'assets/images/tomatecherry.png',
-                  '\$1.000 Pesos',
-                ),
-                _buildProductCard(
-                  'Organico',
-                  'Tomate Roma',
-                  'assets/images/tomateroma.png',
-                  '\$1.000 Pesos',
-                ),
-                _buildProductCard(
-                  'Local',
-                  'Tomate Beefsteak',
-                  'assets/images/tomatebeefsteak.jpg',
-                  '\$1.000 Pesos',
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      // 3. IMPLEMENTACIÓN DEL CUSTOMNAVBAR con la lógica de navegación
+      
+      body: const SearchScreenBody(),
+      
+      // *** CUSTOMNAVBAR RESTAURADA ***
       bottomNavigationBar: CustomNavbar(
         selectedIndex: _selectedIndex,
-        onTabChange: _onTabChange, // Aquí se ejecuta la navegación
+        onTabChange: _onTabChange, 
         pages: const [], 
       ),
     );
   }
+}
 
-  // --- MÉTODOS AUXILIARES (Sin Cambios) ---
+// --- WIDGET PARA EL CUERPO (BODY) DE LA PANTALLA ---
 
-  Widget _buildSearchBar(BuildContext context) {
+class SearchScreenBody extends StatelessWidget {
+  const SearchScreenBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Paleta de colores verdes definida para consistencia.
+    const Color primaryGreen = Color(0xFF388E3C); // Verde oscuro principal
+    const Color lightGreen = Color(0xFFE8F5E9); // Verde claro para fondos
+
+    return Column(
+      children: [
+        SearchBarWidget(primaryColor: primaryGreen, backgroundColor: lightGreen),
+        FilterChipsWidget(primaryColor: primaryGreen, lightColor: lightGreen),
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: 2,
+            padding: const EdgeInsets.all(16.0),
+            childAspectRatio: 0.7,
+            mainAxisSpacing: 16.0,
+            crossAxisSpacing: 16.0,
+            children: [
+              ProductCardWidget(
+                category: 'Organico',
+                name: 'Caja de tomates',
+                imageUrl: 'assets/images/cajatomates.png',
+                price: '\$1.000 Pesos',
+                primaryColor: primaryGreen,
+              ),
+              ProductCardWidget(
+                category: 'Local',
+                name: 'Tomate Cherry',
+                imageUrl: 'assets/images/tomatecherry.png',
+                price: '\$1.000 Pesos',
+                primaryColor: primaryGreen,
+              ),
+              ProductCardWidget(
+                category: 'Organico',
+                name: 'Tomate Roma',
+                imageUrl: 'assets/images/tomateroma.png',
+                price: '\$1.000 Pesos',
+                primaryColor: primaryGreen,
+              ),
+              ProductCardWidget(
+                category: 'Local',
+                name: 'Tomate Beefsteak',
+                imageUrl: 'assets/images/tomatebeefsteak.jpg',
+                price: '\$1.000 Pesos',
+                primaryColor: primaryGreen,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// --- WIDGET MODULARIZADO PARA LA BARRA DE BÚSQUEDA ---
+
+class SearchBarWidget extends StatelessWidget {
+  final Color primaryColor;
+  final Color backgroundColor;
+  const SearchBarWidget({super.key, required this.primaryColor, required this.backgroundColor});
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: TextField(
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search, color: Colors.green[800]),
+          prefixIcon: Icon(Icons.search, color: primaryColor),
           hintText: 'Tomates, Lechuga, Zanahorias...',
-          hintStyle: TextStyle(color: Colors.green[800]),
+          hintStyle: TextStyle(color: primaryColor.withOpacity(0.7)),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: backgroundColor,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
             borderSide: BorderSide.none,
@@ -221,10 +157,37 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
+}
 
-  Widget _buildFilterChips(BuildContext context) {
+// --- WIDGET MODULARIZADO PARA LOS CHIPS DE FILTRO ---
+
+class FilterChipsWidget extends StatelessWidget {
+  final Color primaryColor;
+  final Color lightColor;
+  const FilterChipsWidget({super.key, required this.primaryColor, required this.lightColor});
+
+  Widget _buildChip(String label, {bool isSelected = false}) {
+    return Chip(
+      label: Text(
+        label,
+        style: TextStyle(
+          color: isSelected ? Colors.white : primaryColor,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: isSelected ? primaryColor : lightColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide.none,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
         children: [
           _buildChip('Todo', isSelected: true),
@@ -233,36 +196,35 @@ class _SearchScreenState extends State<SearchScreen> {
           const SizedBox(width: 8),
           _buildChip('Verduras'),
           const Spacer(),
-          const Icon(Icons.filter_list, color: Colors.grey),
+          Icon(Icons.filter_list, color: primaryColor),
           const SizedBox(width: 4),
-          const Text('Filtros', style: TextStyle(color: Colors.grey)),
+          Text('Filtros', style: TextStyle(color: primaryColor)),
         ],
       ),
     );
   }
+}
 
-  Widget _buildChip(String label, {bool isSelected = false}) {
-    return Chip(
-      label: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.green[800],
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      backgroundColor: isSelected ? Colors.green[800] : Colors.grey[200],
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: isSelected
-            ? BorderSide.none
-            : BorderSide(color: Colors.grey[300]!),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    );
-  }
+// --- WIDGET MODULARIZADO PARA LA TARJETA DE PRODUCTO ---
 
-  Widget _buildProductCard(
-      String category, String name, String imageUrl, String price) {
+class ProductCardWidget extends StatelessWidget {
+  final String category;
+  final String name;
+  final String imageUrl;
+  final String price;
+  final Color primaryColor;
+
+  const ProductCardWidget({
+    super.key,
+    required this.category,
+    required this.name,
+    required this.imageUrl,
+    required this.price,
+    required this.primaryColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -278,6 +240,13 @@ class _SearchScreenState extends State<SearchScreen> {
               height: 120,
               width: double.infinity,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 120,
+                  color: Colors.grey[200],
+                  child: Icon(Icons.image_not_supported, color: Colors.grey[400]),
+                );
+              },
             ),
           ),
           Padding(
@@ -287,8 +256,8 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Text(
                   category,
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: primaryColor.withOpacity(0.8),
                     fontSize: 12,
                   ),
                 ),
@@ -296,19 +265,45 @@ class _SearchScreenState extends State<SearchScreen> {
                 Text(
                   name,
                   style: TextStyle(
-                    color: Colors.green[800],
+                    color: primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  price,
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      price,
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // Navega a la página de detalles del producto
+                        Navigator.pushNamed(context, '/product-details');
+                      },
+                      customBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: primaryColor,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -122,7 +122,7 @@ class ProductCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: IconButton(
-                        icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                         icon: const Icon(Icons.add_shopping_cart, color: Colors.white, size: 20),
                         onPressed: () {
                           // Acción para añadir al carrito
                         },

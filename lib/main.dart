@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:huerto_hogar/pages/presentation/OrderTracking.dart';
 import 'package:huerto_hogar/pages/presentation/Search.dart';
 import 'package:huerto_hogar/pages/presentation/ShoppingCartPage.dart';
 import 'package:huerto_hogar/pages/presentation/UserProfilePage.dart';
 import 'package:huerto_hogar/pages/presentation/about_us.dart';
 import 'package:huerto_hogar/pages/presentation/blog.dart';
+import 'package:huerto_hogar/pages/presentation/contra_olvidada.dart';
+import 'package:huerto_hogar/pages/presentation/delivery_preferences.dart';
+import 'package:huerto_hogar/pages/presentation/impact.dart';
+import 'package:huerto_hogar/pages/presentation/loyalty_programs.dart';
 import 'package:huerto_hogar/pages/presentation/order_confirmation_page.dart';
 import 'package:huerto_hogar/pages/presentation/productCatalog.dart';
+import 'package:huerto_hogar/pages/presentation/productDetails.dart';
 import 'package:huerto_hogar/pages/presentation/review_page.dart';
+import 'package:huerto_hogar/pages/presentation/share_app.dart';
 import 'package:huerto_hogar/pages/presentation/welcome_page.dart';
 
 void main() {
@@ -35,6 +42,15 @@ class MyApp extends StatelessWidget {
         '/about-us': (context) => const AboutUs(),
         '/order-confirmation': (context) => const OrderConfirmationPage(),
         '/review-page': (context) => const ReviewProductPage(),
+        '/search': (context) => const SearchScreen(),
+        '/contraseña-olvidada': (context) => const ContraOlvidada(),
+        '/delivery-preference': (context) => const DeliveryPreferences(),
+        '/impacto':(context) => const ImpactApp(),
+        '/loyalty_programs':(context) => const LoyaltyPrograms(),
+        '/ordertracking':(context) => const OrderTrackingPage(),
+        '/product-details':(context) => const ProductDetailsPage(),
+        '/share':(context) => const ShareApp(),
+        
         
       },
 

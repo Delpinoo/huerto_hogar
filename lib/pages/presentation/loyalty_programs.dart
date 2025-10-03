@@ -11,7 +11,7 @@ class LoyaltyPrograms extends StatefulWidget {
 }
 
 class _LoyaltyProgramsState extends State<LoyaltyPrograms> {
-  int _selectedIndex = 0; // Variable de estado para el Navbar
+  int _selectedIndex = 0;
 
   void _onTabChange(int index) {
     setState(() {
@@ -32,16 +32,13 @@ class _LoyaltyProgramsState extends State<LoyaltyPrograms> {
       backgroundColor: const Color.fromARGB(255, 248, 248, 248),
       body: Stack(
         children: [
-          // 1. El contenido de la página es la primera capa
           SingleChildScrollView(
-            // Añade un padding para que el último elemento no quede oculto por el navbar
             padding: const EdgeInsets.only(bottom: 80),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
                 
-                // Sección de perfil (centrada)
                 Center(
                   child: Column(
                     children: [
@@ -105,7 +102,6 @@ class _LoyaltyProgramsState extends State<LoyaltyPrograms> {
 
                 const SizedBox(height: 30),
                 
-                // Título de la sección de beneficios
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
@@ -118,7 +114,6 @@ class _LoyaltyProgramsState extends State<LoyaltyPrograms> {
                 ),
                 const SizedBox(height: 10),
 
-                // Tarjetas de beneficios
                 BenefitCard(
                   imageUrl: 'https://i.redd.it/g4s06358u0a61.png',
                   title: '10% de Descuento en tu Próxima Compra',
@@ -137,22 +132,21 @@ class _LoyaltyProgramsState extends State<LoyaltyPrograms> {
                   },
                 ),
 
-                const SizedBox(height: 10), // Espacio al final de la lista
+                const SizedBox(height: 10),
               ],
             ),
           ),
 
-          // 2. El Navbar es la segunda capa, anclada en la parte inferior
-          Align( // <-- Align la pone en la parte de abajo
-                      alignment: Alignment.bottomCenter,
-                      child: SafeArea( // <-- Mantiene la barra lejos de los botones del sistema
-                        child: CustomNavbar(
-                          selectedIndex: _selectedIndex,
-                          onTabChange: _onTabChange,
-                          pages: const [],
-                        ),
-                      ),
-                    ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SafeArea(
+              child: CustomNavbar(
+                selectedIndex: _selectedIndex,
+                onTabChange: _onTabChange,
+                pages: const [],
+              ),
+            ),
+          ),
         ],
       ),
     );
