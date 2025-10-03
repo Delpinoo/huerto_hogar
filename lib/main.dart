@@ -30,10 +30,9 @@ class MyApp extends StatelessWidget {
       title: 'Huerto Hogar',
 
   
-      initialRoute: '/',
+      initialRoute: '/',//pongan aca la pagina que quieren que sea la inicial o para verla
 
       routes: <String, WidgetBuilder>{
-       
         '/': (context) => const WelcomePage(), // Home 
         '/catalogo': (context) => const ProductCatalogPage(), 
         '/carrito': (context) => const ShoppingCartPage(), 
@@ -41,15 +40,15 @@ class MyApp extends StatelessWidget {
         '/blog': (context) => const BlogPage(),
         '/about-us': (context) => const AboutUs(),
         '/order-confirmation': (context) => const OrderConfirmationPage(),
-        '/review-page': (context) => const ReviewProductPage(),
+        '/review-page': (context) => const ReviewProductPage(),//falta este
         '/search': (context) => const SearchScreen(),
-        '/contraseña-olvidada': (context) => const ContraOlvidada(),
-        '/delivery-preference': (context) => const DeliveryPreferences(),
+        '/contraseña-olvidada': (context) => const ContraOlvidada(),//falta este
+        '/delivery-preference': (context) => const DeliveryPreferences(),//falta este
         '/impacto':(context) => const ImpactApp(),
         '/loyalty_programs':(context) => const LoyaltyPrograms(),
         '/ordertracking':(context) => const OrderTrackingPage(),
         '/product-details':(context) => const ProductDetailsPage(),
-        '/share':(context) => const ShareApp(),
+        '/share':(context) => const ShareApp(),//falta este
         
         
       },
