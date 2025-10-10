@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/OrderTracking.dart';
 
-import 'package:flutter/material.dart';
 
 class OrderStatusCard extends StatelessWidget {
   const OrderStatusCard({super.key});

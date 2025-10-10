@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/OrderTracking.dart';
+import 'package:huerto_hogar/pages/presentation/login_page.dart';
+import 'package:huerto_hogar/pages/presentation/order_tracking.dart';
 import 'package:huerto_hogar/pages/presentation/Search.dart';
 import 'package:huerto_hogar/pages/presentation/ShoppingCartPage.dart';
 import 'package:huerto_hogar/pages/presentation/UserProfilePage.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
 
       routes: <String, WidgetBuilder>{
         '/': (context) => const WelcomePage(), // Home 
+        '/login': (context) => const LoginPage(), // Home 
         '/catalogo': (context) => const ProductCatalogPage(), 
         '/carrito': (context) => const ShoppingCartPage(), 
         '/profile': (context) => const UserProfilePage(),

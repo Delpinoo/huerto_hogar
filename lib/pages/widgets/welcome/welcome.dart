@@ -9,7 +9,9 @@ class WelcomeButtons extends StatelessWidget {
     return Column(
       children: [
         // Boton ver productos
-        ElevatedButton(onPressed: () {}, 
+        ElevatedButton(onPressed: () {
+          Navigator.pushNamed(context, '/catalogo');
+        }, 
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
           backgroundColor: Colors.green,
@@ -20,7 +22,7 @@ class WelcomeButtons extends StatelessWidget {
         const SizedBox(height: 10),
         OutlinedButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/catalogo');
+            Navigator.pushNamed(context, '/login');
             
           },
           style: OutlinedButton.styleFrom(

@@ -1,17 +1,60 @@
 import 'package:flutter/material.dart';
 
+// Definimos las credenciales predeterminadas aquí para fácil acceso y manejo
+const String defaultEmail = 'usuario@prueba.com';
+const String defaultPassword = '123456';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Login Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        fontFamily: 'Roboto',
+      ),
+      // En una aplicación real, pondrías un widget de pantalla completa aquí
+      home: const Scaffold(
+        backgroundColor: Color.fromARGB(255, 230, 245, 230),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Bienvenido',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 50, 168, 54)),
+                ),
+                SizedBox(height: 40),
+                // Aquí se llama al formulario
+                LoginForms(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class LoginForms extends StatelessWidget {
   const LoginForms({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // acá llamamos al fromulario que creamos abajo
-    return FormCustomEmail();
+    return const FormCustomEmail();
   }
 }
 
 
-// Acá creamos la clase para el formulario
+// Acá creamos la clase para el formulario (StatefulWidget)
 class FormCustomEmail extends StatefulWidget {
   const FormCustomEmail({super.key});
 
@@ -22,20 +65,26 @@ class FormCustomEmail extends StatefulWidget {
 }
 
 
-// acá configuramos el formulario
+// acá configuramos el formulario (State)
 class FormEmail extends State<FormCustomEmail> {
+  // 1. Clave global para la validación del formulario
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // acá creamos un borde que rodea el input completo (OutlineINmputBorder) de color verde y de radio de 40
+  // 2. Controladores para capturar el texto de los inputs
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // acá creamos un borde que rodea el input completo (OutlineINmputBorder)
   final outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide.none,
   );
 
   // acá insertamos iconos de la clase MaterialIcons de flutter.
-  static const IconData key = IconData(0xf052b, fontFamily: 'MaterialIcons');
-  static const IconData mail = IconData(0xe3c3, fontFamily: 'MaterialIcons');
-  static const IconData arrowBackIos = IconData(0xe093, fontFamily: 'MaterialIcons',matchTextDirection: true,);
-  
+  static const IconData keyIcon = Icons.vpn_key;
+  static const IconData mailIcon = Icons.email;
+  static const IconData arrowBackIos = Icons.arrow_back_ios;
+
 
   // acá le damos configuraciones al intput de como queremos que sea vea y lo que contenga
   InputDecoration get inputDecorationEmail => InputDecoration(
@@ -43,7 +92,7 @@ class FormEmail extends State<FormCustomEmail> {
     border: outlineInputBorder,
     filled: true,
     fillColor: Colors.white,
-    prefixIcon: Icon(mail)
+    prefixIcon: const Icon(mailIcon, color: Color.fromARGB(255, 50, 168, 54)),
   );
 
 
@@ -52,17 +101,65 @@ class FormEmail extends State<FormCustomEmail> {
     border: outlineInputBorder,
     filled: true,
     fillColor: Colors.white,
-    prefixIcon: Icon(key),
+    prefixIcon: const Icon(keyIcon, color: Color.fromARGB(255, 50, 168, 54)),
   );
 
+  // Debemos liberar los recursos de los controladores al destruir el widget
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
-  final emailfocusNode = FocusNode();
-  final passwordfocusNode = FocusNode();
+  // Lógica para iniciar sesión y validar
+  void _login() {
+    // Intentamos validar el formulario
+    if (_formKey.currentState!.validate()) {
+      final email = _emailController.text.trim();
+      final password = _passwordController.text;
+
+      // Verificamos las credenciales predeterminadas
+      if (email == defaultEmail && password == defaultPassword) {
+        // Credenciales correctas
+        print('¡Inicio de sesión exitoso!');
+        print('Redirigiendo a la página de productos (simulación)...');
+        Navigator.pushNamed(context, '/catalogo');
+        // Muestra un mensaje de éxito (SnackBar)
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ ¡Inicio de sesión exitoso! Redirigiendo a productos...'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        // Aquí iría la navegación a la página de productos: 
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProductCatalogPage()));
+
+      } else {
+        // Credenciales incorrectas
+        print('Error de inicio de sesión: Credenciales incorrectas');
+
+        // Muestra un mensaje de error (SnackBar)
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Credenciales incorrectas. Usuario: $defaultEmail, Contraseña: $defaultPassword'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+    } else {
+      print('Validación fallida. Revise los campos.');
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      // Asignamos la clave global para poder validar
+      key: _formKey,
       child: Column(
         // esto es para que todos los widget se centren
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,15 +168,23 @@ class FormEmail extends State<FormCustomEmail> {
           Center(
             // esto es para poder ingresar texto
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
                 child: SizedBox(
                   width: 300,
                   child: TextFormField(
-                    // esto es para que se oculte el teclado al presionar fuera de este mismo
-                    onTapOutside: (event) {
-                    emailfocusNode.unfocus();
+                    controller: _emailController, // Usar el controlador
+                    keyboardType: TextInputType.emailAddress, // Teclado optimizado para email
+                    // Añadir la lógica de validación
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'El correo electrónico es obligatorio';
+                      }
+                      // Validación de formato básico de email
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                        return 'Ingrese un formato de correo válido';
+                      }
+                      return null;
                     },
-                    focusNode: emailfocusNode,
                     decoration: inputDecorationEmail,
                   ),
                 ) 
@@ -89,62 +194,73 @@ class FormEmail extends State<FormCustomEmail> {
           const SizedBox(height: 5),
 
           Center(child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: SizedBox(
               width: 300,
               child: TextFormField(
-                // esto es para que se oculte el teclado al presionar fuera de este mismo
-                onTapOutside: (event) {
-                passwordfocusNode.unfocus();
-              },
-              focusNode: passwordfocusNode,
-              decoration: inputDecorationPassword
+                controller: _passwordController, // Usar el controlador
+                obscureText: true, // Ocultar el texto de la contraseña
+                // Añadir la lógica de validación
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'La contraseña es obligatoria';
+                  }
+                  if (value.length < 6) {
+                    return 'La contraseña debe tener al menos 6 caracteres';
+                  }
+                  return null;
+                },
+                decoration: inputDecorationPassword,
               ),
             ) 
-           )
+            )
           ),
 
 
           SizedBox(
-            
             height: 20,
             width: 300,
             child: Align(
-              alignment: AlignmentGeometry.centerRight,
+              alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
+                  print('Navegando a la página de recuperación de contraseña');
                   // Lógica para navegar a la página de registro
-                  print('Navegando a la página de registro');
-                  // Por ejemplo: Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+                  // Por ejemplo: Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
                 },
-                child: RichText(
-                  text: TextSpan(
-                    text: '¿Olvidaste tu contraseña? ',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 16,
-                    ),
+                child: const Text(
+                  '¿Olvidaste tu contraseña?',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 50, 168, 54),
+                    fontSize: 16,
                   ),
                 ),
               ),
             ),
-            ),
-           
-           const SizedBox(height: 60),
+          ),
+            
+          const SizedBox(height: 60),
 
 
-           Center(
+          Center(
             child: SizedBox(
               width: 200,
               child: ElevatedButton(
-                onPressed: () {
-                  print('Iniciar sesion');
-                },
+                // Llama a la función _login que maneja la validación y verificación
+                onPressed: _login, 
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 50, 168, 54),
-                  foregroundColor:  Colors.white
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  elevation: 5,
                 ),
-                child: const Text('Iniciar Sesión'),
+                child: const Text(
+                  'Iniciar Sesión',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
@@ -154,30 +270,30 @@ class FormEmail extends State<FormCustomEmail> {
 
 
           Align(
-            alignment: AlignmentGeometry.center,
+            alignment: Alignment.center,
             child: GestureDetector(
               onTap: () {
-                // acá va la logica para poder navegar a la pagina de registrar
                 print('Navegando a la página de registro');
+                // acá va la logica para poder navegar a la pagina de registrar
                 // Por ejemplo: Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
               },
               child: RichText(
-                text: TextSpan(
+                text: const TextSpan(
                 text: '¿No tienes cuenta? ',
                 style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'Regístrate',
-                  style: TextStyle(
-                    color: Colors.green, 
-                    fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 16,
                   ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Regístrate',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 50, 168, 54), 
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
                 ),
-              ],
-              ),
               ),
             ),
           ),

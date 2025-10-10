@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+import 'package:huerto_hogar/pages/widgets/order_tracking/tracking_map_card.dart';
+import 'package:huerto_hogar/pages/widgets/order_tracking/order_status.dart';
+import 'package:huerto_hogar/pages/widgets/order_tracking/delivery_details_card.dart';
+import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
+
+class OrderTrackingPage extends StatefulWidget {
+  const OrderTrackingPage({super.key});
+
+  @override
+  State<OrderTrackingPage> createState() => _OrderTrackingPageState();
+}
+
+class _OrderTrackingPageState extends State<OrderTrackingPage> {
+  int _selectedIndex = 0;
+
+  final List<String> _routes = const [
+    '/',
+    '/search',
+    '/carrito',
+    '/profile',
+  ];
+
+  void _onTabChange(int index) {
+    if (_selectedIndex == index) return;
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      _routes[index],
+      (route) => false,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+      appBar: AppBar(
+        title: const Text('Order Tracking',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: const [
+              TrackingMapCard(),
+              SizedBox(height: 20),
+              OrderStatusCard(),
+              SizedBox(height: 20),
+              DeliveryDetailsCard(),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: CustomNavbar(
+        selectedIndex: _selectedIndex,
+        onTabChange: _onTabChange,
+        pages: const [],
+      ),
+    );
+  }
+}

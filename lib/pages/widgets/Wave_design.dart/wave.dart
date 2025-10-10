@@ -18,8 +18,8 @@ class WavePainter extends CustomPainter {
     
     // Ajustamos las curvas para que sean más pronunciadas
     path.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.6,
-      size.width * 0.5, size.height * 0.8,
+      size.width * 0.25, size.height * 0.5,
+      size.width * 0.4, size.height * 0.7,
     );
     
     path.quadraticBezierTo(

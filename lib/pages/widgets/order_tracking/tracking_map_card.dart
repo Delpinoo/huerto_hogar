@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/presentation/OrderTracking.dart';
 
 class TrackingMapCard extends StatelessWidget {
   const TrackingMapCard({super.key});

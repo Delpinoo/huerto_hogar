@@ -46,11 +46,11 @@
 
 
               SizedBox(height: screenHeight * 0.1),
-              const SizedBox(height: 70,),
+              const SizedBox(height: 20,),
             // acá invocamos el widget de la wave verde que está al final abajo
 
                 SizedBox(
-                height: 150,
+                height: 40,
                 width: double.infinity,
                 child: CustomPaint(
                     painter: WavePainter(const Color(0xFFC8E6C9)),

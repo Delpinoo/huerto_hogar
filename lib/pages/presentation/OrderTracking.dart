@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:huerto_hogar/pages/widgets/OrderTracking/TrackingMapCard.dart';
-import 'package:huerto_hogar/pages/widgets/OrderTracking/OrderStatus.dart';
-import 'package:huerto_hogar/pages/widgets/OrderTracking/DeliveryDetailsCard.dart';
+import 'package:huerto_hogar/pages/widgets/order_tracking/tracking_map_card.dart';
+import 'package:huerto_hogar/pages/widgets/order_tracking/order_status.dart';
+import 'package:huerto_hogar/pages/widgets/order_tracking/delivery_details_card.dart';
 import 'package:huerto_hogar/pages/widgets/review_products/custom_nav_bar.dart';
 
 class OrderTrackingPage extends StatefulWidget {
